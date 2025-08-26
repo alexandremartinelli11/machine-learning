@@ -61,7 +61,7 @@ Primeiro foi feita uma verificação em todas as colunas procurando valores falt
 
 ## Divisão dos Dados
 
-Os dados foram divididos em 70% para treino e 30% para validação.
+O conjunto de dados foi dividido em 70% para treino e 30% para validação, garantindo que o modelo fosse treinado em uma parte significativa das observações, mas ainda avaliado em dados não vistos. O uso do conjunto de validação tem como objetivo detectar e reduzir o risco de overfitting.
 
 
 ## Treinamento do Modelo
@@ -91,6 +91,14 @@ Os dados foram divididos em 70% para treino e 30% para validação.
     ```python exec="on" html="1"
     --8<-- "docs/arvore/arvore46.py"
     ```
+
+=== "Code"
+
+    ```python
+    --8<-- "docs/arvore/arvore46.py"
+    ```
+
+## Avaliação do Modelo
 
 
 ## Referências
