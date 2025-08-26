@@ -5,7 +5,7 @@ from io import StringIO
 from sklearn import tree
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 def standardization(df):
 
@@ -45,23 +45,38 @@ d = standardization(d)
 plt.figure(figsize=(12, 10))
 
 # Carregar o conjunto de dados
-x = d[['N-Age', 'Sex', 'BP', 'Cholesterol', 'N-Na_to_K']]
+x = d[['N-Age', 'BP', 'Cholesterol', 'N-Na_to_K']]
 y = d['Drug']
 
 # Dividir os dados em conjuntos de treinamento e teste
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.4, random_state=42)
 
 # Criar e treinar o modelo de árvore de decisão
 classifier = tree.DecisionTreeClassifier()
 classifier.fit(x_train, y_train)
 
+y_pred = classifier.predict(x_test)
+
+cm = confusion_matrix(y_test, y_pred)
+labels = classifier.classes_
+cm_df = pd.DataFrame(cm, index=labels, columns=labels)
+
+report_dict = classification_report(y_test, y_pred, output_dict=True)
+report_df = pd.DataFrame(report_dict).transpose()
+
 # Avaliar o modelo
 accuracy = classifier.score(x_test, y_test)
-print(f"Accuracy: {accuracy:.2f}")
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+print("<h3>Relatório de Classificação:</h3>")
+print(report_df.to_html(classes="table table-bordered table-striped", border=0))
+
+print("<h3>Matriz de Confusão:</h3>")
+print(cm_df.to_html(classes="table table-bordered table-striped", border=0))
 
 # Optional: Print feature importances
 feature_importance = pd.DataFrame({
-    'Feature': ['N-Age', 'Sex', 'BP', 'Cholesterol', 'N-Na_to_K'],
+    'Feature': ['N-Age', 'BP', 'Cholesterol', 'N-Na_to_K'],
     'Importance': classifier.feature_importances_
 })
 print("<br>Feature Importances:")

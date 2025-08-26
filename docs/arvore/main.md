@@ -1,4 +1,16 @@
 
+<style>
+    table {
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+    text-align: center;
+    }
+    table td, table th {
+    padding: 8px 12px;
+    }
+</style>
+
 # Entrega Individual 
 
 1. [Alexandre Martinelli](https://github.com/alexandremartinelli11){:target='_blank'}
@@ -15,10 +27,11 @@
 5. Na_to_K (sódio para potássio): Essa coluna tem os a razão de sódio para potássio no sangue de um paciente, com a minima de 6,27, media de 16,1 e maxima de 38,2, dados do tipo Float/Decimal.
 6. Drug (remédio): Essa coluna tem os remédio de melhor resposta para o paciente, dados do tipo String.
 
+=== "Base"
 
-```python exec="on" html="0"
---8<-- "docs/arvore/original.py"
-```
+    ```python exec="on" html="0"
+    --8<-- "docs/arvore/original.py"
+    ```
 
 
 ## Pré-processamento
@@ -53,11 +66,32 @@ Os dados foram divididos em 70% para treino e 30% para validação.
 
 ## Treinamento do Modelo
 
-=== "Result"
+=== "Result 80% 20%"
 
     ```python exec="on" html="1"
-    --8<-- "docs/arvore/arvore.py"
+    --8<-- "docs/arvore/arvore82.py"
     ```
+=== "Result 70% 30%"
+
+    ```python exec="on" html="1"
+    --8<-- "docs/arvore/arvore73.py"
+    ```
+=== "Result 60% 40%"
+
+    ```python exec="on" html="1"
+    --8<-- "docs/arvore/arvore64.py"
+    ```
+=== "Result 50% 50%"
+
+    ```python exec="on" html="1"
+    --8<-- "docs/arvore/arvore55.py"
+    ```
+=== "Result 40% 60%"
+
+    ```python exec="on" html="1"
+    --8<-- "docs/arvore/arvore46.py"
+    ```
+
 
 ## Referências
 
