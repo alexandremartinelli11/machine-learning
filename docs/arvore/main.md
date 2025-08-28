@@ -23,7 +23,7 @@
 1. Age (Idade): Essa coluna temos a idade dos pacientes, com a idade minima presente de 15, idade média de 44,3 e maxima de 74 sendo do tipo Integer. 
 2. Sex (Sexo): Essa coluna tem o sexo de cada paciente, divididos em 52% Masculino e 48% feminino, dados do tipo String.
 3. Blood Pressure (Pressão Arterial): Essa coluna tem os niveis de pressão arterial de cada paciente sendo dividida em 39% HIGH, 29% NORMAL e 32% LOW, dados do tipo String.
-4. Cholesterol (nivel de colesterol): Essa coluna tem os niveis de colesterol de cada paciente sendo divididos em 52% HIGH e 49% NORMAl, dados do tipo String.
+4. Cholesterol (nivel de colesterol): Essa coluna tem os niveis de colesterol de cada paciente sendo divididos em 52% HIGH e 49% NORMAL, dados do tipo String.
 5. Na_to_K (sódio para potássio): Essa coluna tem os a razão de sódio para potássio no sangue de um paciente, com a minima de 6,27, media de 16,1 e maxima de 38,2, dados do tipo Float/Decimal.
 6. Drug (remédio): Essa coluna tem os remédio de melhor resposta para o paciente, dados do tipo String.
 
@@ -99,6 +99,10 @@ O conjunto de dados foi dividido em 70% para treino e 30% para validação, gara
     ```
 
 ## Avaliação do Modelo
+
+Como vimos na seção de treinamento, a base selecionada para o treinamento da árvore não é ideal, apresentando 100% de accuracy, precision, recall e F1-score em diferentes divisões dos dados (80%/20%, 70%/30%, 60%/40%, 50%/50%),  apresentando pouca variação apenas quando a divisão chega em 40% treino e 60% teste.
+Isso indica que a árvore de decisão provavelmente está sofrendo de overfitting, ou seja, aprendeu particularidades específicas da base em vez de padrões gerais. Assim, embora apresente resultados excelentes nos testes, o modelo pode não generalizar bem para dados realmente novos.
+Uma possível melhoria seria aumentar a quantidade de dados para reduzir o overfitting.
 
 
 ## Referências
