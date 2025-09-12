@@ -36,6 +36,7 @@ def preprocess(df):
     df['Sex'] = label_encoder.fit_transform(df['Sex'])
     df['BP'] = label_encoder.fit_transform(df['BP'])
     df['Cholesterol'] = label_encoder.fit_transform(df['Cholesterol'])
+    df['Drug'] = label_encoder.fit_transform(df['Drug'])
 
     # Select features
     features = ['Age', 'Sex', 'BP', 'Cholesterol', 'Na_to_K', 'Drug']
@@ -99,18 +100,18 @@ knn = KNeighborsClassifier(n_neighbors=3)
 knn.fit(X_train, y_train)
 predictions = knn.predict(X_test)
 
-'''
+
 # Visualize decision boundary
 h = 0.02  # Step size in mesh
-x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
-y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+x_min, x_max = X_pca[:, 0].min() - 1, X_pca[:, 0].max() + 1
+y_min, y_max = X_pca[:, 1].min() - 1, X_pca[:, 1].max() + 1
 xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
 
 Z = knn.predict(np.c_[xx.ravel(), yy.ravel()])
 Z = Z.reshape(xx.shape)
 
 plt.contourf(xx, yy, Z, cmap=plt.cm.RdYlBu, alpha=0.3)
-sns.scatterplot(x=X[:, 0], y=X[:, 1], hue=y, style=y, palette="deep", s=100)
+sns.scatterplot(x=X_pca[:, 0], y=X_pca[:, 1], hue=y, style=y, palette="deep", s=100)
 plt.xlabel("Feature 1")
 plt.ylabel("Feature 2")
 plt.title("KNN Decision Boundary (k=3)")
@@ -119,4 +120,3 @@ plt.title("KNN Decision Boundary (k=3)")
 buffer = StringIO()
 plt.savefig(buffer, format="svg", transparent=True)
 print(buffer.getvalue())
-'''
