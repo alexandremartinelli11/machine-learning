@@ -71,6 +71,9 @@ O conjunto de dados foi dividido em 70% para treino e 30% para validação, gara
     ```python exec="on" html="1"
     --8<-- "docs/KNN/knn.py"
     ```
+    ```python exec="on" html="1"
+    --8<-- "docs/KNN/curva.py"
+    ```
 
 === "Code"
 

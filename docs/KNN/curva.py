@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from io import StringIO
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.metrics import accuracy_score, classification_report, roc_curve, auc
 import seaborn as sns
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
@@ -60,73 +60,48 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 knn = KNeighborsClassifier(n_neighbors=3)
 knn.fit(X_train, y_train)
 predictions = knn.predict(X_test)
-print(f"Accuracy: {accuracy_score(y_test, predictions):.2f}")
 
+# Obter as probabilidades de previsão para todas as classes
+y_scores = knn.predict_proba(X_test)
 
-r = permutation_importance(
-    knn,                  
-    X_test,               
-    y_test,               
-    n_repeats=30,         
-    random_state=42,
-    scoring='accuracy'    
-)
+# Mapear classes e cores
+classes = np.unique(y_test)
+n_classes = len(classes)
+colors = cycle(['blue', 'red', 'green', 'orange'])
+fpr_dict = {}
+tpr_dict = {}
+roc_auc_dict = {}
 
+plt.figure(figsize=(10, 8))
 
-feature_importance = pd.DataFrame({
-    'Feature': X.columns,
-    'Importance': r.importances_mean,
-    'Std': r.importances_std
-})
+# Abordagem One-vs-Rest
+for i, color in zip(classes, colors):
+    # Trata a classe `i` como positiva e o restante como negativo
+    y_test_bin = (y_test == i).astype(int)
+    
+    # Obter as probabilidades para a classe `i`
+    y_scores_class = y_scores[:, i]
 
-report_dict = classification_report(y_test, predictions, output_dict=True)
-report_df = pd.DataFrame(report_dict).transpose()
+    fpr, tpr, _ = roc_curve(y_test_bin, y_scores_class)
+    roc_auc = auc(fpr, tpr)
+    
+    fpr_dict[i] = fpr
+    tpr_dict[i] = tpr
+    roc_auc_dict[i] = roc_auc
+    
+    plt.plot(fpr, tpr, color=color, lw=2,
+             label=f'ROC da Classe {i} (área = {roc_auc:.2f})')
 
-cm = confusion_matrix(y_test, predictions)
-labels = knn.classes_
-cm_df = pd.DataFrame(cm, index=labels, columns=labels)
-
-# ordenar e mostrar (HTML igual ao seu exemplo)
-feature_importance = feature_importance.sort_values(by='Importance', ascending=False)
-print("<br>Feature Importances (Permutation):")
-print(feature_importance.to_html(index=False))
-
-print("<h3>Relatório de Classificação:</h3>")
-print(report_df.to_html(classes="table table-bordered table-striped", border=0))
-
-# Escalar features
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-
-# Reduzir para 2 dimensões (apenas para visualização)
-pca = PCA(n_components=2)
-X_pca = pca.fit_transform(X_scaled)
-
-# Split train/test
-X_train, X_test, y_train, y_test = train_test_split(X_pca, y, test_size=0.3, random_state=42)
-
-# Treinar KNN
-knn = KNeighborsClassifier(n_neighbors=3)
-knn.fit(X_train, y_train)
-predictions = knn.predict(X_test)
-
-
-# Visualize decision boundary
-h = 0.02  # Step size in mesh
-x_min, x_max = X_pca[:, 0].min() - 1, X_pca[:, 0].max() + 1
-y_min, y_max = X_pca[:, 1].min() - 1, X_pca[:, 1].max() + 1
-xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
-
-Z = knn.predict(np.c_[xx.ravel(), yy.ravel()])
-Z = Z.reshape(xx.shape)
-
-plt.contourf(xx, yy, Z, cmap=plt.cm.RdYlBu, alpha=0.3)
-sns.scatterplot(x=X_pca[:, 0], y=X_pca[:, 1], hue=y, style=y, palette="deep", s=100)
-plt.xlabel("Feature 1")
-plt.ylabel("Feature 2")
-plt.title("KNN Decision Boundary (k=3)")
-
-# Display the plot
+# Plotar a linha base do classificador aleatório
+plt.plot([0, 1], [0, 1], 'k--', lw=2, label='Classificador Aleatório')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('Taxa de Falsos Positivos (FPR)')
+plt.ylabel('Taxa de Verdadeiros Positivos (TPR)')
+plt.title('Curvas ROC Multiclasse (One-vs-Rest)')
+plt.legend(loc='lower right')
+plt.grid(True)
 buffer = StringIO()
 plt.savefig(buffer, format="svg", transparent=True)
 print(buffer.getvalue())
+
