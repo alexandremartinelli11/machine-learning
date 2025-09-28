@@ -66,8 +66,6 @@ O conjunto de dados foi dividido em 70% para treino e 30% para validação, gara
 
 ## Treinamento do Modelo
 
-Foi utilizada a função `permutation_importance()` para identificar as features de maior relevancia para o modelo, essa função funciona de seguinte forma: é calculada a `acurácia` original do modelo e após isso ele vai em cada feature embaralhando/permutando os valores no conjunto de teste. Ao finalizar esse processo recalcula a `acurácia` para cada dimensão permutada e compara o quanto ela caiu em relação a original.
-
 === "Result 70% 30%"
 
     ```python exec="on" html="1"
@@ -77,10 +75,12 @@ Foi utilizada a função `permutation_importance()` para identificar as features
 === "Code"
 
     ```python
-    --8<-- "docs/KNN/knn.py"
+    --8<-- "docs/kmeans/kmeans.py"
     ```
 
 ## Avaliação do Modelo
+
+O K-Means, mesmo após redução com PCA, não conseguiu reproduzir bem as cinco classes do conjunto de dados. A matriz de confusão mostra que os clusters formados concentram-se principalmente em duas classes, indicando que o algoritmo não separou adequadamente todas as categorias. Assim, a acurácia obtida reflete apenas a sobreposição entre clusters e classes reais. Uma possível melhoria seria aumentar a quantidade de dados.
 
 
 

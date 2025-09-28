@@ -65,7 +65,6 @@ report_dict = classification_report(y_test, y_pred, output_dict=True)
 report_df = pd.DataFrame(report_dict).transpose()
 
 # Avaliar o modelo
-accuracy = classifier.score(x_test, y_test)
 print("Accuracy:", accuracy_score(y_test, y_pred))
 
 print("<h3>Relatório de Classificação:</h3>")

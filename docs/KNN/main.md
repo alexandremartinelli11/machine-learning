@@ -85,7 +85,7 @@ Foi utilizada a função `permutation_importance()` para identificar as features
 
 ## Avaliação do Modelo
 
-
+O modelo KNN (k=3) obteve aproximadamente 0,93 de acurácia nos dados de teste, indicando bom desempenho geral. A análise da curva ROC multiclasse (One-vs-Rest) mostra que todas as classes, exceto uma, apresentam área sob a curva (AUC) igual a 1,0, enquanto a última classe apresenta AUC de 0,99, sinalizando que o modelo praticamente não erra na maioria das classes, mas pode cometer alguns erros sutis na previsão de uma classe específica. Apesar da alta acurácia e AUC, é recomendável comparar o desempenho nos dados de treino e teste para verificar possíveis sinais de overfitting. Para aprimorar o modelo, podemos testar diferentes Ks no KNN e usar  técnicas de balanceamento de classes caso haja desbalanceamento.
 
 ## Referências
 

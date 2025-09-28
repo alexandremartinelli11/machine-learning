@@ -2,9 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from io import StringIO
 import pandas as pd
+from scipy.stats import mode
 from sklearn.preprocessing import LabelEncoder
 from sklearn.cluster import KMeans
-from sklearn.decomposition import PCA  # <--- IMPORTANTE
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.decomposition import PCA  
+
 
 plt.figure(figsize=(12, 10))
 
@@ -35,6 +39,7 @@ def preprocess(df):
     features = ['Age', 'Sex', 'BP', 'Cholesterol', 'Na_to_K', 'Drug']
     return df[features]
 
+label_encoder = LabelEncoder()
 # Load dataset
 df = pd.read_csv('https://raw.githubusercontent.com/alexandremartinelli11/machine-learning/refs/heads/main/data/kaggle/drug200.csv')
 
@@ -42,19 +47,47 @@ df = pd.read_csv('https://raw.githubusercontent.com/alexandremartinelli11/machin
 d = preprocess(df.copy())
 d = standardization(d)
 
-# Select features for clustering
-X = d[['N-Age', 'BP', 'Cholesterol', 'N-Na_to_K', 'Drug']]
+X = d[['N-Age', 'BP', 'Cholesterol', 'N-Na_to_K']]
+y = d['Drug']
 
-# Run K-Means
-kmeans = KMeans(n_clusters=5, init='k-means++', max_iter=100, random_state=42)
-labels = kmeans.fit_predict(X)
+#Separar em teste e validação
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# ----> PCA para reduzir a 2D
+# Reduzir para 2 dimensões com PCA
 pca = PCA(n_components=2)
-X_pca = pca.fit_transform(X)
+X_pca = pca.fit_transform(X_train)
+
+# Treinar KMeans
+kmeans = KMeans(n_clusters=5, init="k-means++", max_iter=100, random_state=42)
+labels = kmeans.fit_predict(X_pca)
+
+# Mapear clusters para classes reais por voto majoritário
+cluster_map = {}
+for c in np.unique(labels):
+    mask = labels == c
+    majority_class = mode(y_train[mask], keepdims=False)[0]
+    cluster_map[c] = majority_class
+
+# Reatribuir clusters como classes previstas
+y_pred = np.array([cluster_map[c] for c in labels])
+
+# Calcular acurácia e matriz de confusão
+acc = accuracy_score(y_train, y_pred)
+cm = confusion_matrix(y_train, y_pred)
+
+cm_df = pd.DataFrame(
+    cm,
+    index=[f"Classe Real {cls}" for cls in np.unique(y_train)],
+    columns=[f"Classe Pred {cls}" for cls in np.unique(y_train)]
+)
+
+print(f"Acurácia: {acc:.2f}%")
+print("<br>Matriz de Confusão:")
+print(cm_df.to_html())
 
 # Também projetar os centróides no PCA
-centroids_pca = pca.transform(kmeans.cluster_centers_)
+centroids_pca = kmeans.cluster_centers_
+                        
 
 # Plot results
 plt.figure(figsize=(10, 8))

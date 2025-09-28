@@ -67,7 +67,7 @@ y_scores = knn.predict_proba(X_test)
 # Mapear classes e cores
 classes = np.unique(y_test)
 n_classes = len(classes)
-colors = cycle(['blue', 'red', 'green', 'orange'])
+colors = cycle(['blue', 'red', 'green', 'orange', 'yellow'])
 fpr_dict = {}
 tpr_dict = {}
 roc_auc_dict = {}
