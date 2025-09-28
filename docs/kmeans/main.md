@@ -71,10 +71,7 @@ Foi utilizada a função `permutation_importance()` para identificar as features
 === "Result 70% 30%"
 
     ```python exec="on" html="1"
-    --8<-- "docs/KNN/knn.py"
-    ```
-    ```python exec="on" html="1"
-    --8<-- "docs/KNN/curva.py"
+    --8<-- "docs/kmeans/kmeans.py"
     ```
 
 === "Code"
