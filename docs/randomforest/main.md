@@ -75,9 +75,8 @@ O conjunto de dados foi dividido em 70% para treino e 30% para validação, gara
 
 ## Avaliação do Modelo
 
-Como vimos na seção de treinamento, a base selecionada para o treinamento da árvore não é ideal, apresentando 100% de accuracy, precision, recall e F1-score em diferentes divisões dos dados (80%/20%, 70%/30%, 60%/40%, 50%/50%),  apresentando pouca variação apenas quando a divisão chega em 40% treino e 60% teste.
-Isso indica que a árvore de decisão provavelmente está sofrendo de overfitting, ou seja, aprendeu particularidades específicas da base em vez de padrões gerais. Assim, embora apresente resultados excelentes nos testes, o modelo pode não generalizar bem para dados realmente novos.
-Uma possível melhoria seria aumentar a quantidade de dados para reduzir o overfitting.
+No experimento, a Random Forest foi treinada com divisão 70% treino / 30% validação do dataset de fármacos (drugA–drugY), conforme definido no plano de execução e script de treinamento. Nos resultados, o modelo alcançou accuracy = 1,0, com precision recall e F1-score iguais a 1,0 para todas as classes (supports: drugA = 7, drugB = 3, drugC = 6, drugX = 18, drugY = 26), e macro/weighted avg = 1,0, a matriz de confusão não registrou erros de classificação. As importâncias de atributos estimadas pela floresta indicaram maior influência de Na_to_K (~0,559), seguida por BP (~0,258), Age (~0,132) e Cholesterol (~0,051), coerente com a capacidade do algoritmo de ponderar variáveis por ganho de impureza.
+
 
 
 ## Referências

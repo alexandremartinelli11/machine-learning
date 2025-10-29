@@ -41,7 +41,7 @@ def preprocess(df):
 
 label_encoder = LabelEncoder()
 # Load dataset
-df = pd.read_csv('https://raw.githubusercontent.com/alexandremartinelli11/machine-learning/refs/heads/main/data/kaggle/drug200.csv')
+df = pd.read_csv('data/kaggle/drug200.csv')
 
 # Preprocessing
 d = preprocess(df.copy())

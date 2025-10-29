@@ -30,7 +30,7 @@ def preprocess(df):
     return df[features]
 
 # Load the dataset
-df = pd.read_csv('https://raw.githubusercontent.com/alexandremartinelli11/machine-learning/refs/heads/main/data/kaggle/drug200.csv')
+df = pd.read_csv('data/kaggle/drug200.csv')
 df = df.sample(n=10, random_state=42)
 
 # Preprocessing
