@@ -1,5 +1,5 @@
 site/
-env/
+.env/
 .cache/
 .vscode/
 target/
