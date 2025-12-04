@@ -140,4 +140,5 @@ nav:
     - Random Forest: ./randomforest/main.md
     - Page Rank: ./pagerank/main.md
     - PySpark: ./pyspark/main.md
+    - SVM: ./svm/main.md
   - Projeto: ./projeto/main.md
