@@ -72,6 +72,12 @@ O conjunto de dados foi dividido em 70% para treino e 30% para validação, gara
     --8<-- "docs/svm/svm.py"
     ```
 
+=== "Code"
+
+    ```python exec="0" html="0"
+    --8<-- "docs/svm/svm.py"
+    ```
+
 
 ## Avaliação do Modelo
 

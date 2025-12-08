@@ -17,4 +17,4 @@ yfinance
 scikit-learn
 tabulate
 seaborn
-
+networkx
