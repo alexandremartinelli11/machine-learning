@@ -1,0 +1,893 @@
+<!DOCTYPE html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="Alexandre Martinelli"><link href=https://alexandremartinelli11.github.io/machine-learning/kmeans/main/ rel=canonical><link href=../../KNN/main/ rel=prev><link href=../../randomforest/main/ rel=next><link rel=icon href=../../assets/images/favicon.png><meta name=generator content="mkdocs-1.6.1, mkdocs-material-9.7.0"><title>K-Means - Template de Entrega</title><link rel=stylesheet href=../../assets/stylesheets/main.618322db.min.css><link rel=stylesheet href=../../assets/stylesheets/palette.ab4e12ef.min.css><style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M64%20480c-35.3%200-64-28.7-64-64V96c0-35.3%2028.7-64%2064-64h320c35.3%200%2064%2028.7%2064%2064v213.5c0%2017-6.7%2033.3-18.7%2045.3L322.7%20461.3c-12%2012-28.3%2018.7-45.3%2018.7zm325.5-176H296c-13.3%200-24%2010.7-24%2024v93.5z%22/%3E%3C/svg%3E');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M384%20512H96c-53%200-96-43-96-96V96C0%2043%2043%200%2096%200h304c26.5%200%2048%2021.5%2048%2048v288c0%2020.9-13.4%2038.7-32%2045.3V448c17.7%200%2032%2014.3%2032%2032s-14.3%2032-32%2032zM96%20384c-17.7%200-32%2014.3-32%2032s14.3%2032%2032%2032h256v-64zm32-232c0%2013.3%2010.7%2024%2024%2024h176c13.3%200%2024-10.7%2024-24s-10.7-24-24-24H152c-13.3%200-24%2010.7-24%2024m24%2072c-13.3%200-24%2010.7-24%2024s10.7%2024%2024%2024h176c13.3%200%2024-10.7%2024-24s-10.7-24-24-24z%22/%3E%3C/svg%3E');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M256%20512a256%20256%200%201%200%200-512%20256%20256%200%201%200%200%20512m-32-352a32%2032%200%201%201%2064%200%2032%2032%200%201%201-64%200m-8%2064h48c13.3%200%2024%2010.7%2024%2024v88h8c13.3%200%2024%2010.7%2024%2024s-10.7%2024-24%2024h-80c-13.3%200-24-10.7-24-24s10.7-24%2024-24h24v-64h-24c-13.3%200-24-10.7-24-24s10.7-24%2024-24%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M461.2%2018.9C472.7%2024%20480%2035.4%20480%2048v416c0%2012.6-7.3%2024-18.8%2029.1s-24.8%203.2-34.3-5.1l-46.6-40.7c-43.6-38.1-98.7-60.3-156.4-63V480c0%2017.7-14.3%2032-32%2032h-32c-17.7%200-32-14.3-32-32v-96C57.3%20384%200%20326.7%200%20256s57.3-128%20128-128h84.5c61.8-.2%20121.4-22.7%20167.9-63.3L427%2024c9.4-8.3%2022.9-10.2%2034.3-5.1zM224%20320v.2c70.3%202.7%20137.8%2028.5%20192%2073.4V118.3c-54.2%2044.9-121.7%2070.7-192%2073.4z%22/%3E%3C/svg%3E');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M434.8%2070.1c14.3%2010.4%2017.5%2030.4%207.1%2044.7l-256%20352c-5.5%207.6-14%2012.3-23.4%2013.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8%200-45.3s32.8-12.5%2045.3%200l101.5%20101.5%20234-321.7c10.4-14.3%2030.4-17.5%2044.7-7.1z%22/%3E%3C/svg%3E');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M256%20512a256%20256%200%201%200%200-512%20256%20256%200%201%200%200%20512m0-336c-17.7%200-32%2014.3-32%2032%200%2013.3-10.7%2024-24%2024s-24-10.7-24-24c0-44.2%2035.8-80%2080-80s80%2035.8%2080%2080c0%2047.2-36%2067.2-56%2074.5v3.8c0%2013.3-10.7%2024-24%2024s-24-10.7-24-24v-8.1c0-20.5%2014.8-35.2%2030.1-40.2%206.4-2.1%2013.2-5.5%2018.2-10.3%204.3-4.2%207.7-10%207.7-19.6%200-17.7-14.3-32-32-32zm-32%20192a32%2032%200%201%201%2064%200%2032%2032%200%201%201-64%200%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M256%200c14.7%200%2028.2%208.1%2035.2%2021l216%20400c6.7%2012.4%206.4%2027.4-.8%2039.5S486.1%20480%20472%20480H40c-14.1%200-27.2-7.4-34.4-19.5s-7.5-27.1-.8-39.5l216-400c7-12.9%2020.5-21%2035.2-21m0%20352a32%2032%200%201%200%200%2064%2032%2032%200%201%200%200-64m0-192c-18.2%200-32.7%2015.5-31.4%2033.7l7.4%20104c.9%2012.5%2011.4%2022.3%2023.9%2022.3%2012.6%200%2023-9.7%2023.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z%22/%3E%3C/svg%3E');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20576%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M480-16c6.9%200%2013%204.4%2015.2%2010.9l13.5%2040.4%2040.4%2013.5C555.6%2051%20560%2057.1%20560%2064s-4.4%2013-10.9%2015.2l-40.4%2013.5-13.5%2040.4c-2.2%206.5-8.3%2010.9-15.2%2010.9s-13-4.4-15.2-10.9l-13.5-40.4-40.4-13.5C404.4%2077%20400%2070.9%20400%2064s4.4-13%2010.9-15.2l40.4-13.5%2013.5-40.4C467-11.6%20473.1-16%20480-16M321.4%2097.4c12.5-12.5%2032.8-12.5%2045.3%200l80%2080c12.5%2012.5%2012.5%2032.8%200%2045.3l-10.9%2010.9c7.9%2022%2012.2%2045.7%2012.2%2070.5%200%20114.9-93.1%20208-208%20208S32%20418.9%2032%20304%20125.1%2096%20240%2096c24.7%200%2048.5%204.3%2070.5%2012.3zM144%20304c0-53%2043-96%2096-96%2013.3%200%2024-10.7%2024-24s-10.7-24-24-24c-79.5%200-144%2064.5-144%20144%200%2013.3%2010.7%2024%2024%2024s24-10.7%2024-24%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M416%20427.4c58.5-44%2096-111.6%2096-187.4C512%20107.5%20397.4%200%20256%200S0%20107.5%200%20240c0%2075.8%2037.5%20143.4%2096%20187.4V464c0%2026.5%2021.5%2048%2048%2048h32v-40c0-13.3%2010.7-24%2024-24s24%2010.7%2024%2024v40h64v-40c0-13.3%2010.7-24%2024-24s24%2010.7%2024%2024v40h32c26.5%200%2048-21.5%2048-48zM96%20256a64%2064%200%201%201%20128%200%2064%2064%200%201%201-128%200m256-64a64%2064%200%201%201%200%20128%2064%2064%200%201%201%200-128%22/%3E%3C/svg%3E');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20640%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M352%200c0-17.7-14.3-32-32-32s-32%2014.3-32%2032v64h-96c-53%200-96%2043-96%2096v224c0%2053%2043%2096%2096%2096h256c53%200%2096-43%2096-96V160c0-53-43-96-96-96h-96zM160%20368c0-13.3%2010.7-24%2024-24h32c13.3%200%2024%2010.7%2024%2024s-10.7%2024-24%2024h-32c-13.3%200-24-10.7-24-24m120%200c0-13.3%2010.7-24%2024-24h32c13.3%200%2024%2010.7%2024%2024s-10.7%2024-24%2024h-32c-13.3%200-24-10.7-24-24m120%200c0-13.3%2010.7-24%2024-24h32c13.3%200%2024%2010.7%2024%2024s-10.7%2024-24%2024h-32c-13.3%200-24-10.7-24-24M224%20176a48%2048%200%201%201%200%2096%2048%2048%200%201%201%200-96m144%2048a48%2048%200%201%201%2096%200%2048%2048%200%201%201-96%200m-304%200c0-17.7-14.3-32-32-32S0%20206.3%200%20224v96c0%2017.7%2014.3%2032%2032%2032s32-14.3%2032-32zm544-32c-17.7%200-32%2014.3-32%2032v96c0%2017.7%2014.3%2032%2032%2032s32-14.3%2032-32v-96c0-17.7-14.3-32-32-32%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M288%200H128c-17.7%200-32%2014.3-32%2032s14.3%2032%2032%2032v151.5L7.5%20426.3C2.6%20435%200%20444.7%200%20454.7%200%20486.4%2025.6%20512%2057.3%20512h333.4c31.6%200%2057.3-25.6%2057.3-57.3%200-10-2.6-19.8-7.5-28.4L320%20215.5V64c17.7%200%2032-14.3%2032-32S337.7%200%20320%200zm-96%20215.5V64h64v151.5c0%2011.1%202.9%2022.1%208.4%2031.8L306%20320H142l41.6-72.7c5.5-9.7%208.4-20.6%208.4-31.8%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M0%20216C0%20149.7%2053.7%2096%20120%2096h8c17.7%200%2032%2014.3%2032%2032s-14.3%2032-32%2032h-8c-30.9%200-56%2025.1-56%2056v8h64c35.3%200%2064%2028.7%2064%2064v64c0%2035.3-28.7%2064-64%2064H64c-35.3%200-64-28.7-64-64zm256%200c0-66.3%2053.7-120%20120-120h8c17.7%200%2032%2014.3%2032%2032s-14.3%2032-32%2032h-8c-30.9%200-56%2025.1-56%2056v8h64c35.3%200%2064%2028.7%2064%2064v64c0%2035.3-28.7%2064-64%2064h-64c-35.3%200-64-28.7-64-64z%22/%3E%3C/svg%3E');}</style><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback"><style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style><link rel=stylesheet href=../../assets/_markdown_exec_pyodide.css><link rel=stylesheet href=../../assets/_markdown_exec_ansi.css><link rel=stylesheet href=../../assets/stylesheets/badge.css><link rel=stylesheet href=../../termynal.css><script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script><link href=../../assets/stylesheets/glightbox.min.css rel=stylesheet><script src=../../assets/javascripts/glightbox.min.js></script><style id=glightbox-style>
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head> <body dir=ltr data-md-color-scheme=default data-md-color-primary=grey data-md-color-accent=indigo> <input class=md-toggle data-md-toggle=drawer type=checkbox id=__drawer autocomplete=off> <input class=md-toggle data-md-toggle=search type=checkbox id=__search autocomplete=off> <label class=md-overlay for=__drawer></label> <div data-md-component=skip> <a href=#entrega-individual class=md-skip> Skip to content </a> </div> <div data-md-component=announce> </div> <header class="md-header md-header--shadow" data-md-component=header> <nav class="md-header__inner md-grid" aria-label=Header> <a href=../.. title="Template de Entrega" class="md-header__button md-logo" aria-label="Template de Entrega" data-md-component=logo> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg> </a> <label class="md-header__button md-icon" for=__drawer> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg> </label> <div class=md-header__title data-md-component=header-title> <div class=md-header__ellipsis> <div class=md-header__topic> <span class=md-ellipsis> Template de Entrega </span> </div> <div class=md-header__topic data-md-component=header-topic> <span class=md-ellipsis> K-Means </span> </div> </div> </div> <form class=md-header__option data-md-component=palette> <input class=md-option data-md-color-media data-md-color-scheme=default data-md-color-primary=grey data-md-color-accent=indigo aria-label="Switch to dark mode" type=radio name=__palette id=__palette_0> <label class="md-header__button md-icon" title="Switch to dark mode" for=__palette_1 hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg> </label> <input class=md-option data-md-color-media=(prefers-color-scheme) data-md-color-scheme=default data-md-color-primary=grey data-md-color-accent=indigo aria-label="Switch to light mode" type=radio name=__palette id=__palette_1> <label class="md-header__button md-icon" title="Switch to light mode" for=__palette_2 hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg> </label> <input class=md-option data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme=default data-md-color-primary=grey data-md-color-accent=indigo aria-label="Switch to dark mode" type=radio name=__palette id=__palette_2> <label class="md-header__button md-icon" title="Switch to dark mode" for=__palette_3 hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg> </label> <input class=md-option data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme=slate data-md-color-primary=grey data-md-color-accent=indigo aria-label="Switch to system preference" type=radio name=__palette id=__palette_3> <label class="md-header__button md-icon" title="Switch to system preference" for=__palette_0 hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg> </label> </form> <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script> <label class="md-header__button md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg> </label> <div class=md-search data-md-component=search role=dialog> <label class=md-search__overlay for=__search></label> <div class=md-search__inner role=search> <form class=md-search__form name=search> <input type=text class=md-search__input name=query aria-label=Search placeholder=Search autocapitalize=off autocorrect=off autocomplete=off spellcheck=false data-md-component=search-query required> <label class="md-search__icon md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg> </label> <nav class=md-search__options aria-label=Search> <button type=reset class="md-search__icon md-icon" title=Clear aria-label=Clear tabindex=-1> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg> </button> </nav> </form> <div class=md-search__output> <div class=md-search__scrollwrap tabindex=0 data-md-scrollfix> <div class=md-search-result data-md-component=search-result> <div class=md-search-result__meta> Initializing search </div> <ol class=md-search-result__list role=presentation></ol> </div> </div> </div> </div> </div> <div class=md-header__source> <a href=https://github.com/alexandremartinelli11/machine-learning title="Go to repository" class=md-source data-md-component=source> <div class="md-source__icon md-icon"> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 448 512"><!-- Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg> </div> <div class=md-source__repository> github/machine-learning </div> </a> </div> </nav> </header> <div class=md-container data-md-component=container> <main class=md-main data-md-component=main> <div class="md-main__inner md-grid"> <div class="md-sidebar md-sidebar--primary" data-md-component=sidebar data-md-type=navigation> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--primary" aria-label=Navigation data-md-level=0> <label class=md-nav__title for=__drawer> <a href=../.. title="Template de Entrega" class="md-nav__button md-logo" aria-label="Template de Entrega" data-md-component=logo> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg> </a> Template de Entrega </label> <div class=md-nav__source> <a href=https://github.com/alexandremartinelli11/machine-learning title="Go to repository" class=md-source data-md-component=source> <div class="md-source__icon md-icon"> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 448 512"><!-- Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg> </div> <div class=md-source__repository> github/machine-learning </div> </a> </div> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../.. class=md-nav__link> <span class=md-ellipsis> Home </span> </a> </li> <li class="md-nav__item md-nav__item--active md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_2 checked> <label class=md-nav__link for=__nav_2 id=__nav_2_label tabindex=0> <span class=md-ellipsis> Roteiros </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_2_label aria-expanded=true> <label class=md-nav__title for=__nav_2> <span class="md-nav__icon md-icon"></span> Roteiros </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../arvore/main/ class=md-nav__link> <span class=md-ellipsis> Árvore de Decisão </span> </a> </li> <li class=md-nav__item> <a href=../../KNN/main/ class=md-nav__link> <span class=md-ellipsis> KNN </span> </a> </li> <li class="md-nav__item md-nav__item--active"> <input class="md-nav__toggle md-toggle" type=checkbox id=__toc> <label class="md-nav__link md-nav__link--active" for=__toc> <span class=md-ellipsis> K-Means </span> <span class="md-nav__icon md-icon"></span> </label> <a href=./ class="md-nav__link md-nav__link--active"> <span class=md-ellipsis> K-Means </span> </a> <nav class="md-nav md-nav--secondary" aria-label="Table of contents"> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> Table of contents </label> <ul class=md-nav__list data-md-component=toc data-md-scrollfix> <li class=md-nav__item> <a href=#introducao class=md-nav__link> <span class=md-ellipsis> Introdução </span> </a> <nav class=md-nav aria-label=Introdução> <ul class=md-nav__list> <li class=md-nav__item> <a href=#colunas class=md-nav__link> <span class=md-ellipsis> Colunas </span> </a> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=#pre-processamento class=md-nav__link> <span class=md-ellipsis> Pré-processamento </span> </a> </li> <li class=md-nav__item> <a href=#divisao-dos-dados class=md-nav__link> <span class=md-ellipsis> Divisão dos Dados </span> </a> </li> <li class=md-nav__item> <a href=#treinamento-do-modelo class=md-nav__link> <span class=md-ellipsis> Treinamento do Modelo </span> </a> </li> <li class=md-nav__item> <a href=#avaliacao-do-modelo class=md-nav__link> <span class=md-ellipsis> Avaliação do Modelo </span> </a> </li> <li class=md-nav__item> <a href=#referencias class=md-nav__link> <span class=md-ellipsis> Referências </span> </a> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=../../randomforest/main/ class=md-nav__link> <span class=md-ellipsis> Random Forest </span> </a> </li> <li class=md-nav__item> <a href=../../pagerank/main/ class=md-nav__link> <span class=md-ellipsis> Page Rank </span> </a> </li> <li class=md-nav__item> <a href=../../pyspark/main/ class=md-nav__link> <span class=md-ellipsis> PySpark </span> </a> </li> <li class=md-nav__item> <a href=../../svm/main/ class=md-nav__link> <span class=md-ellipsis> SVM </span> </a> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=../../projeto/main/ class=md-nav__link> <span class=md-ellipsis> Projeto </span> </a> </li> </ul> </nav> </div> </div> </div> <div class="md-sidebar md-sidebar--secondary" data-md-component=sidebar data-md-type=toc> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--secondary" aria-label="Table of contents"> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> Table of contents </label> <ul class=md-nav__list data-md-component=toc data-md-scrollfix> <li class=md-nav__item> <a href=#introducao class=md-nav__link> <span class=md-ellipsis> Introdução </span> </a> <nav class=md-nav aria-label=Introdução> <ul class=md-nav__list> <li class=md-nav__item> <a href=#colunas class=md-nav__link> <span class=md-ellipsis> Colunas </span> </a> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=#pre-processamento class=md-nav__link> <span class=md-ellipsis> Pré-processamento </span> </a> </li> <li class=md-nav__item> <a href=#divisao-dos-dados class=md-nav__link> <span class=md-ellipsis> Divisão dos Dados </span> </a> </li> <li class=md-nav__item> <a href=#treinamento-do-modelo class=md-nav__link> <span class=md-ellipsis> Treinamento do Modelo </span> </a> </li> <li class=md-nav__item> <a href=#avaliacao-do-modelo class=md-nav__link> <span class=md-ellipsis> Avaliação do Modelo </span> </a> </li> <li class=md-nav__item> <a href=#referencias class=md-nav__link> <span class=md-ellipsis> Referências </span> </a> </li> </ul> </nav> </div> </div> </div> <div class=md-content data-md-component=content> <nav class=md-path aria-label=Navigation> <ol class=md-path__list> <li class=md-path__item> <a href=../.. class=md-path__link> <span class=md-ellipsis> Home </span> </a> </li> <li class=md-path__item> <a href=../../arvore/main/ class=md-path__link> <span class=md-ellipsis> Roteiros </span> </a> </li> </ol> </nav> <article class="md-content__inner md-typeset"> <style>
+    table {
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+    text-align: center;
+    }
+    table td, table th {
+    padding: 8px 12px;
+    }
+</style> <h1 id=entrega-individual>Entrega Individual</h1> <ol> <li><a href=https://github.com/alexandremartinelli11 target=_blank>Alexandre Martinelli</a></li> </ol> <h2 id=introducao>Introdução</h2> <ol> <li>Exploração de dados: Ao selecionar uma base no <a href=https://www.kaggle.com/datasets/pablomgomez21/drugs-a-b-c-x-y-for-decision-trees target=_blank>kaggle</a> referentes a cinco tipos de remédio, remédio A, B, C, X e Y, tem como objetivo prever qual remédio o paciente teria uma resposta melhor. As colunas presentes nesse dataset são Idade, Sexo, Pressão Arterial, nivel de colesterol, nivel de sódio para potássio no sangue e remédio que seria nossa target. </li> </ol> <h3 id=colunas>Colunas</h3> <ol> <li>Age (Idade): Essa coluna temos a idade dos pacientes, com a idade minima presente de 15, idade média de 44,3 e maxima de 74 sendo do tipo Integer. </li> <li>Sex (Sexo): Essa coluna tem o sexo de cada paciente, divididos em 52% Masculino e 48% feminino, dados do tipo String.</li> <li>Blood Pressure (Pressão Arterial): Essa coluna tem os niveis de pressão arterial de cada paciente sendo dividida em 39% HIGH, 29% NORMAL e 32% LOW, dados do tipo String.</li> <li>Cholesterol (nivel de colesterol): Essa coluna tem os niveis de colesterol de cada paciente sendo divididos em 52% HIGH e 49% NORMAL, dados do tipo String.</li> <li>Na_to_K (sódio para potássio): Essa coluna tem os a razão de sódio para potássio no sangue de um paciente, com a minima de 6,27, media de 16,1 e maxima de 38,2, dados do tipo Float/Decimal.</li> <li>Drug (remédio): Essa coluna tem os remédio de melhor resposta para o paciente, dados do tipo String.</li> </ol> <div class="tabbed-set tabbed-alternate" data-tabs=1:1><input checked=checked id=__tabbed_1_1 name=__tabbed_1 type=radio><div class=tabbed-labels><label for=__tabbed_1_1>Base</label></div> <div class=tabbed-content> <div class=tabbed-block> <table> <thead> <tr> <th style="text-align: right;">Age</th> <th style="text-align: left;">Sex</th> <th style="text-align: left;">BP</th> <th style="text-align: left;">Cholesterol</th> <th style="text-align: right;">Na_to_K</th> <th style="text-align: left;">Drug</th> </tr> </thead> <tbody> <tr> <td style="text-align: right;">36</td> <td style="text-align: left;">M</td> <td style="text-align: left;">LOW</td> <td style="text-align: left;">NORMAL</td> <td style="text-align: right;">11.424</td> <td style="text-align: left;">drugX</td> </tr> <tr> <td style="text-align: right;">16</td> <td style="text-align: left;">F</td> <td style="text-align: left;">HIGH</td> <td style="text-align: left;">NORMAL</td> <td style="text-align: right;">15.516</td> <td style="text-align: left;">drugY</td> </tr> <tr> <td style="text-align: right;">18</td> <td style="text-align: left;">F</td> <td style="text-align: left;">NORMAL</td> <td style="text-align: left;">NORMAL</td> <td style="text-align: right;">8.75</td> <td style="text-align: left;">drugX</td> </tr> <tr> <td style="text-align: right;">59</td> <td style="text-align: left;">F</td> <td style="text-align: left;">LOW</td> <td style="text-align: left;">HIGH</td> <td style="text-align: right;">10.444</td> <td style="text-align: left;">drugC</td> </tr> <tr> <td style="text-align: right;">47</td> <td style="text-align: left;">M</td> <td style="text-align: left;">LOW</td> <td style="text-align: left;">NORMAL</td> <td style="text-align: right;">33.542</td> <td style="text-align: left;">drugY</td> </tr> <tr> <td style="text-align: right;">51</td> <td style="text-align: left;">M</td> <td style="text-align: left;">HIGH</td> <td style="text-align: left;">HIGH</td> <td style="text-align: right;">18.295</td> <td style="text-align: left;">drugY</td> </tr> <tr> <td style="text-align: right;">18</td> <td style="text-align: left;">F</td> <td style="text-align: left;">HIGH</td> <td style="text-align: left;">NORMAL</td> <td style="text-align: right;">24.276</td> <td style="text-align: left;">drugY</td> </tr> <tr> <td style="text-align: right;">28</td> <td style="text-align: left;">F</td> <td style="text-align: left;">NORMAL</td> <td style="text-align: left;">HIGH</td> <td style="text-align: right;">12.879</td> <td style="text-align: left;">drugX</td> </tr> <tr> <td style="text-align: right;">42</td> <td style="text-align: left;">M</td> <td style="text-align: left;">HIGH</td> <td style="text-align: left;">NORMAL</td> <td style="text-align: right;">12.766</td> <td style="text-align: left;">drugA</td> </tr> <tr> <td style="text-align: right;">66</td> <td style="text-align: left;">F</td> <td style="text-align: left;">NORMAL</td> <td style="text-align: left;">NORMAL</td> <td style="text-align: right;">8.107</td> <td style="text-align: left;">drugX</td> </tr> </tbody> </table> </div> </div> </div> <h2 id=pre-processamento>Pré-processamento</h2> <p>Primeiro foi feita uma verificação em todas as colunas procurando valores faltantes e substituindo eles pela mediana em valores numéricos ou pela moda em variáveis categóricas. Como vimos na descrição das colunas temos três que possuem dados categóricos do tipo String, sendo elas Sex(Sexo), Blood Pressure(Pressão Arterial) e Cholesterol(nivel de colesterol), para conseguirmos utilizar essas informações é necessario convertelas em numeros, oque foi feito utilizando a biblioteca scikit-learn que possui a função LabelEncoder(), em seguida aplicamos dois tipos de escalonamento às colunas numéricas Age e Na_to_K: padronização (z-score) e normalização min-max.</p> <div class="tabbed-set tabbed-alternate" data-tabs=2:4><input checked=checked id=__tabbed_2_1 name=__tabbed_2 type=radio><input id=__tabbed_2_2 name=__tabbed_2 type=radio><input id=__tabbed_2_3 name=__tabbed_2 type=radio><input id=__tabbed_2_4 name=__tabbed_2 type=radio><div class=tabbed-labels><label for=__tabbed_2_1>Result</label><label for=__tabbed_2_2>Prep Code</label><label for=__tabbed_2_3>Standardization</label><label for=__tabbed_2_4>Standardization code</label></div> <div class=tabbed-content> <div class=tabbed-block> <table> <thead> <tr> <th style="text-align: right;">N-Age</th> <th style="text-align: right;">Sex</th> <th style="text-align: right;">BP</th> <th style="text-align: right;">Cholesterol</th> <th style="text-align: right;">N-Na_to_K</th> <th style="text-align: left;">Drug</th> </tr> </thead> <tbody> <tr> <td style="text-align: right;">0.4</td> <td style="text-align: right;">1</td> <td style="text-align: right;">1</td> <td style="text-align: right;">1</td> <td style="text-align: right;">0.130411</td> <td style="text-align: left;">drugX</td> </tr> <tr> <td style="text-align: right;">0</td> <td style="text-align: right;">0</td> <td style="text-align: right;">0</td> <td style="text-align: right;">1</td> <td style="text-align: right;">0.291292</td> <td style="text-align: left;">drugY</td> </tr> <tr> <td style="text-align: right;">0.04</td> <td style="text-align: right;">0</td> <td style="text-align: right;">2</td> <td style="text-align: right;">1</td> <td style="text-align: right;">0.0252801</td> <td style="text-align: left;">drugX</td> </tr> <tr> <td style="text-align: right;">0.86</td> <td style="text-align: right;">0</td> <td style="text-align: right;">1</td> <td style="text-align: right;">0</td> <td style="text-align: right;">0.0918813</td> <td style="text-align: left;">drugC</td> </tr> <tr> <td style="text-align: right;">0.62</td> <td style="text-align: right;">1</td> <td style="text-align: right;">1</td> <td style="text-align: right;">1</td> <td style="text-align: right;">1</td> <td style="text-align: left;">drugY</td> </tr> <tr> <td style="text-align: right;">0.7</td> <td style="text-align: right;">1</td> <td style="text-align: right;">0</td> <td style="text-align: right;">0</td> <td style="text-align: right;">0.40055</td> <td style="text-align: left;">drugY</td> </tr> <tr> <td style="text-align: right;">0.04</td> <td style="text-align: right;">0</td> <td style="text-align: right;">0</td> <td style="text-align: right;">1</td> <td style="text-align: right;">0.635699</td> <td style="text-align: left;">drugY</td> </tr> <tr> <td style="text-align: right;">0.24</td> <td style="text-align: right;">0</td> <td style="text-align: right;">2</td> <td style="text-align: right;">0</td> <td style="text-align: right;">0.187615</td> <td style="text-align: left;">drugX</td> </tr> <tr> <td style="text-align: right;">0.52</td> <td style="text-align: right;">1</td> <td style="text-align: right;">0</td> <td style="text-align: right;">1</td> <td style="text-align: right;">0.183173</td> <td style="text-align: left;">drugA</td> </tr> <tr> <td style="text-align: right;">1</td> <td style="text-align: right;">0</td> <td style="text-align: right;">2</td> <td style="text-align: right;">1</td> <td style="text-align: right;">0</td> <td style="text-align: left;">drugX</td> </tr> </tbody> </table> </div> <div class=tabbed-block> <div class="language-python highlight"><pre><span></span><code><span id=__span-0-1><a id=__codelineno-0-1 name=__codelineno-0-1 href=#__codelineno-0-1></a><span class=kn>import</span><span class=w> </span><span class=nn>pandas</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=nn>pd</span>
+</span><span id=__span-0-2><a id=__codelineno-0-2 name=__codelineno-0-2 href=#__codelineno-0-2></a><span class=kn>from</span><span class=w> </span><span class=nn>sklearn.preprocessing</span><span class=w> </span><span class=kn>import</span> <span class=n>LabelEncoder</span>
+</span><span id=__span-0-3><a id=__codelineno-0-3 name=__codelineno-0-3 href=#__codelineno-0-3></a>
+</span><span id=__span-0-4><a id=__codelineno-0-4 name=__codelineno-0-4 href=#__codelineno-0-4></a><span class=c1># Preprocess the data</span>
+</span><span id=__span-0-5><a id=__codelineno-0-5 name=__codelineno-0-5 href=#__codelineno-0-5></a><span class=k>def</span><span class=w> </span><span class=nf>preprocess</span><span class=p>(</span><span class=n>df</span><span class=p>):</span>
+</span><span id=__span-0-6><a id=__codelineno-0-6 name=__codelineno-0-6 href=#__codelineno-0-6></a>    <span class=c1># Fill missing values</span>
+</span><span id=__span-0-7><a id=__codelineno-0-7 name=__codelineno-0-7 href=#__codelineno-0-7></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>median</span><span class=p>(),</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-0-8><a id=__codelineno-0-8 name=__codelineno-0-8 href=#__codelineno-0-8></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-0-9><a id=__codelineno-0-9 name=__codelineno-0-9 href=#__codelineno-0-9></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-0-10><a id=__codelineno-0-10 name=__codelineno-0-10 href=#__codelineno-0-10></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-0-11><a id=__codelineno-0-11 name=__codelineno-0-11 href=#__codelineno-0-11></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>median</span><span class=p>(),</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-0-12><a id=__codelineno-0-12 name=__codelineno-0-12 href=#__codelineno-0-12></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Drug'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Drug'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-0-13><a id=__codelineno-0-13 name=__codelineno-0-13 href=#__codelineno-0-13></a>
+</span><span id=__span-0-14><a id=__codelineno-0-14 name=__codelineno-0-14 href=#__codelineno-0-14></a>   <span class=c1># Convert categorical variables</span>
+</span><span id=__span-0-15><a id=__codelineno-0-15 name=__codelineno-0-15 href=#__codelineno-0-15></a>    <span class=n>label_encoder</span> <span class=o>=</span> <span class=n>LabelEncoder</span><span class=p>()</span>
+</span><span id=__span-0-16><a id=__codelineno-0-16 name=__codelineno-0-16 href=#__codelineno-0-16></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>]</span> <span class=o>=</span> <span class=n>label_encoder</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>])</span>
+</span><span id=__span-0-17><a id=__codelineno-0-17 name=__codelineno-0-17 href=#__codelineno-0-17></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>]</span> <span class=o>=</span> <span class=n>label_encoder</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>])</span>
+</span><span id=__span-0-18><a id=__codelineno-0-18 name=__codelineno-0-18 href=#__codelineno-0-18></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>]</span> <span class=o>=</span> <span class=n>label_encoder</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>])</span>
+</span><span id=__span-0-19><a id=__codelineno-0-19 name=__codelineno-0-19 href=#__codelineno-0-19></a>
+</span><span id=__span-0-20><a id=__codelineno-0-20 name=__codelineno-0-20 href=#__codelineno-0-20></a>    <span class=c1># Select features</span>
+</span><span id=__span-0-21><a id=__codelineno-0-21 name=__codelineno-0-21 href=#__codelineno-0-21></a>    <span class=n>features</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'Age'</span><span class=p>,</span> <span class=s1>'Sex'</span><span class=p>,</span> <span class=s1>'BP'</span><span class=p>,</span> <span class=s1>'Cholesterol'</span><span class=p>,</span> <span class=s1>'Na_to_K'</span><span class=p>,</span> <span class=s1>'Drug'</span><span class=p>]</span>
+</span><span id=__span-0-22><a id=__codelineno-0-22 name=__codelineno-0-22 href=#__codelineno-0-22></a>    <span class=k>return</span> <span class=n>df</span><span class=p>[</span><span class=n>features</span><span class=p>]</span>
+</span><span id=__span-0-23><a id=__codelineno-0-23 name=__codelineno-0-23 href=#__codelineno-0-23></a>
+</span><span id=__span-0-24><a id=__codelineno-0-24 name=__codelineno-0-24 href=#__codelineno-0-24></a><span class=c1># Load the dataset</span>
+</span><span id=__span-0-25><a id=__codelineno-0-25 name=__codelineno-0-25 href=#__codelineno-0-25></a><span class=n>df</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>read_csv</span><span class=p>(</span><span class=s1>'data/kaggle/drug200.csv'</span><span class=p>)</span>
+</span><span id=__span-0-26><a id=__codelineno-0-26 name=__codelineno-0-26 href=#__codelineno-0-26></a><span class=n>df</span> <span class=o>=</span> <span class=n>df</span><span class=o>.</span><span class=n>sample</span><span class=p>(</span><span class=n>n</span><span class=o>=</span><span class=mi>10</span><span class=p>,</span> <span class=n>random_state</span><span class=o>=</span><span class=mi>42</span><span class=p>)</span>
+</span><span id=__span-0-27><a id=__codelineno-0-27 name=__codelineno-0-27 href=#__codelineno-0-27></a>
+</span><span id=__span-0-28><a id=__codelineno-0-28 name=__codelineno-0-28 href=#__codelineno-0-28></a><span class=c1># Preprocessing</span>
+</span><span id=__span-0-29><a id=__codelineno-0-29 name=__codelineno-0-29 href=#__codelineno-0-29></a><span class=n>df</span> <span class=o>=</span> <span class=n>preprocess</span><span class=p>(</span><span class=n>df</span><span class=p>)</span>
+</span><span id=__span-0-30><a id=__codelineno-0-30 name=__codelineno-0-30 href=#__codelineno-0-30></a>
+</span><span id=__span-0-31><a id=__codelineno-0-31 name=__codelineno-0-31 href=#__codelineno-0-31></a><span class=c1># Display the first few rows of the dataset</span>
+</span><span id=__span-0-32><a id=__codelineno-0-32 name=__codelineno-0-32 href=#__codelineno-0-32></a><span class=nb>print</span><span class=p>(</span><span class=n>df</span><span class=o>.</span><span class=n>to_markdown</span><span class=p>(</span><span class=n>index</span><span class=o>=</span><span class=kc>False</span><span class=p>))</span>
+</span></code></pre></div> </div> <div class=tabbed-block> <table> <thead> <tr> <th style="text-align: right;"></th> <th style="text-align: right;">Age</th> <th style="text-align: right;">N-Age</th> <th style="text-align: right;">Z-Age</th> <th style="text-align: right;">Na_to_K</th> <th style="text-align: right;">N-Na_to_K</th> <th style="text-align: right;">Z-Na_to_K</th> </tr> </thead> <tbody> <tr> <td style="text-align: right;">95</td> <td style="text-align: right;">36</td> <td style="text-align: right;">0.4</td> <td style="text-align: right;">-0.117416</td> <td style="text-align: right;">11.424</td> <td style="text-align: right;">0.130411</td> <td style="text-align: right;">-0.526121</td> </tr> <tr> <td style="text-align: right;">15</td> <td style="text-align: right;">16</td> <td style="text-align: right;">0</td> <td style="text-align: right;">-1.23566</td> <td style="text-align: right;">15.516</td> <td style="text-align: right;">0.291292</td> <td style="text-align: right;">-0.0105705</td> </tr> <tr> <td style="text-align: right;">30</td> <td style="text-align: right;">18</td> <td style="text-align: right;">0.04</td> <td style="text-align: right;">-1.12384</td> <td style="text-align: right;">8.75</td> <td style="text-align: right;">0.0252801</td> <td style="text-align: right;">-0.863018</td> </tr> <tr> <td style="text-align: right;">158</td> <td style="text-align: right;">59</td> <td style="text-align: right;">0.86</td> <td style="text-align: right;">1.16857</td> <td style="text-align: right;">10.444</td> <td style="text-align: right;">0.0918813</td> <td style="text-align: right;">-0.649591</td> </tr> <tr> <td style="text-align: right;">128</td> <td style="text-align: right;">47</td> <td style="text-align: right;">0.62</td> <td style="text-align: right;">0.49762</td> <td style="text-align: right;">33.542</td> <td style="text-align: right;">1</td> <td style="text-align: right;">2.26052</td> </tr> <tr> <td style="text-align: right;">115</td> <td style="text-align: right;">51</td> <td style="text-align: right;">0.7</td> <td style="text-align: right;">0.72127</td> <td style="text-align: right;">18.295</td> <td style="text-align: right;">0.40055</td> <td style="text-align: right;">0.339555</td> </tr> <tr> <td style="text-align: right;">69</td> <td style="text-align: right;">18</td> <td style="text-align: right;">0.04</td> <td style="text-align: right;">-1.12384</td> <td style="text-align: right;">24.276</td> <td style="text-align: right;">0.635699</td> <td style="text-align: right;">1.0931</td> </tr> <tr> <td style="text-align: right;">170</td> <td style="text-align: right;">28</td> <td style="text-align: right;">0.24</td> <td style="text-align: right;">-0.564715</td> <td style="text-align: right;">12.879</td> <td style="text-align: right;">0.187615</td> <td style="text-align: right;">-0.342806</td> </tr> <tr> <td style="text-align: right;">174</td> <td style="text-align: right;">42</td> <td style="text-align: right;">0.52</td> <td style="text-align: right;">0.218058</td> <td style="text-align: right;">12.766</td> <td style="text-align: right;">0.183173</td> <td style="text-align: right;">-0.357043</td> </tr> <tr> <td style="text-align: right;">45</td> <td style="text-align: right;">66</td> <td style="text-align: right;">1</td> <td style="text-align: right;">1.55996</td> <td style="text-align: right;">8.107</td> <td style="text-align: right;">0</td> <td style="text-align: right;">-0.944029</td> </tr> </tbody> </table> </div> <div class=tabbed-block> <div class="language-python highlight"><pre><span></span><code><span id=__span-1-1><a id=__codelineno-1-1 name=__codelineno-1-1 href=#__codelineno-1-1></a><span class=kn>import</span><span class=w> </span><span class=nn>pandas</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=nn>pd</span>
+</span><span id=__span-1-2><a id=__codelineno-1-2 name=__codelineno-1-2 href=#__codelineno-1-2></a><span class=kn>from</span><span class=w> </span><span class=nn>sklearn.preprocessing</span><span class=w> </span><span class=kn>import</span> <span class=n>LabelEncoder</span>
+</span><span id=__span-1-3><a id=__codelineno-1-3 name=__codelineno-1-3 href=#__codelineno-1-3></a>
+</span><span id=__span-1-4><a id=__codelineno-1-4 name=__codelineno-1-4 href=#__codelineno-1-4></a><span class=k>def</span><span class=w> </span><span class=nf>standardization</span><span class=p>(</span><span class=n>df</span><span class=p>):</span>
+</span><span id=__span-1-5><a id=__codelineno-1-5 name=__codelineno-1-5 href=#__codelineno-1-5></a>
+</span><span id=__span-1-6><a id=__codelineno-1-6 name=__codelineno-1-6 href=#__codelineno-1-6></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Z-Age'</span><span class=p>]</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>apply</span><span class=p>(</span><span class=k>lambda</span> <span class=n>x</span><span class=p>:</span> <span class=p>(</span><span class=n>x</span><span class=o>-</span><span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>mean</span><span class=p>())</span><span class=o>/</span><span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>std</span><span class=p>())</span>
+</span><span id=__span-1-7><a id=__codelineno-1-7 name=__codelineno-1-7 href=#__codelineno-1-7></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'N-Age'</span><span class=p>]</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>apply</span><span class=p>(</span><span class=k>lambda</span> <span class=n>x</span><span class=p>:</span> <span class=p>(</span><span class=n>x</span><span class=o>-</span><span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>min</span><span class=p>())</span><span class=o>/</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>max</span><span class=p>()</span><span class=o>-</span><span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>min</span><span class=p>()))</span>
+</span><span id=__span-1-8><a id=__codelineno-1-8 name=__codelineno-1-8 href=#__codelineno-1-8></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Z-Na_to_K'</span><span class=p>]</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>apply</span><span class=p>(</span><span class=k>lambda</span> <span class=n>x</span><span class=p>:</span> <span class=p>(</span><span class=n>x</span><span class=o>-</span><span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>mean</span><span class=p>())</span><span class=o>/</span><span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>std</span><span class=p>())</span>
+</span><span id=__span-1-9><a id=__codelineno-1-9 name=__codelineno-1-9 href=#__codelineno-1-9></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'N-Na_to_K'</span><span class=p>]</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>apply</span><span class=p>(</span><span class=k>lambda</span> <span class=n>x</span><span class=p>:</span> <span class=p>(</span><span class=n>x</span><span class=o>-</span><span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>min</span><span class=p>())</span><span class=o>/</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>max</span><span class=p>()</span><span class=o>-</span><span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>min</span><span class=p>()))</span>
+</span><span id=__span-1-10><a id=__codelineno-1-10 name=__codelineno-1-10 href=#__codelineno-1-10></a>    <span class=n>df</span> <span class=o>=</span> <span class=n>df</span><span class=p>[[</span><span class=s1>'Age'</span><span class=p>,</span> <span class=s1>'N-Age'</span><span class=p>,</span> <span class=s1>'Z-Age'</span><span class=p>,</span> <span class=s1>'Na_to_K'</span><span class=p>,</span> <span class=s1>'N-Na_to_K'</span><span class=p>,</span> <span class=s1>'Z-Na_to_K'</span><span class=p>]]</span><span class=o>.</span><span class=n>dropna</span><span class=p>()</span>
+</span><span id=__span-1-11><a id=__codelineno-1-11 name=__codelineno-1-11 href=#__codelineno-1-11></a>    <span class=nb>print</span><span class=p>(</span><span class=n>df</span><span class=o>.</span><span class=n>head</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span><span class=o>.</span><span class=n>to_markdown</span><span class=p>())</span>
+</span><span id=__span-1-12><a id=__codelineno-1-12 name=__codelineno-1-12 href=#__codelineno-1-12></a>
+</span><span id=__span-1-13><a id=__codelineno-1-13 name=__codelineno-1-13 href=#__codelineno-1-13></a><span class=k>def</span><span class=w> </span><span class=nf>preprocess</span><span class=p>(</span><span class=n>df</span><span class=p>):</span>
+</span><span id=__span-1-14><a id=__codelineno-1-14 name=__codelineno-1-14 href=#__codelineno-1-14></a>    <span class=c1># Fill missing values</span>
+</span><span id=__span-1-15><a id=__codelineno-1-15 name=__codelineno-1-15 href=#__codelineno-1-15></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>median</span><span class=p>(),</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-1-16><a id=__codelineno-1-16 name=__codelineno-1-16 href=#__codelineno-1-16></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-1-17><a id=__codelineno-1-17 name=__codelineno-1-17 href=#__codelineno-1-17></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-1-18><a id=__codelineno-1-18 name=__codelineno-1-18 href=#__codelineno-1-18></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-1-19><a id=__codelineno-1-19 name=__codelineno-1-19 href=#__codelineno-1-19></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>median</span><span class=p>(),</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-1-20><a id=__codelineno-1-20 name=__codelineno-1-20 href=#__codelineno-1-20></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Drug'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Drug'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-1-21><a id=__codelineno-1-21 name=__codelineno-1-21 href=#__codelineno-1-21></a>
+</span><span id=__span-1-22><a id=__codelineno-1-22 name=__codelineno-1-22 href=#__codelineno-1-22></a>   <span class=c1># Convert categorical variables</span>
+</span><span id=__span-1-23><a id=__codelineno-1-23 name=__codelineno-1-23 href=#__codelineno-1-23></a>    <span class=n>label_encoder</span> <span class=o>=</span> <span class=n>LabelEncoder</span><span class=p>()</span>
+</span><span id=__span-1-24><a id=__codelineno-1-24 name=__codelineno-1-24 href=#__codelineno-1-24></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>]</span> <span class=o>=</span> <span class=n>label_encoder</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>])</span>
+</span><span id=__span-1-25><a id=__codelineno-1-25 name=__codelineno-1-25 href=#__codelineno-1-25></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>]</span> <span class=o>=</span> <span class=n>label_encoder</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>])</span>
+</span><span id=__span-1-26><a id=__codelineno-1-26 name=__codelineno-1-26 href=#__codelineno-1-26></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>]</span> <span class=o>=</span> <span class=n>label_encoder</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>])</span>
+</span><span id=__span-1-27><a id=__codelineno-1-27 name=__codelineno-1-27 href=#__codelineno-1-27></a>
+</span><span id=__span-1-28><a id=__codelineno-1-28 name=__codelineno-1-28 href=#__codelineno-1-28></a>    <span class=c1># Select features</span>
+</span><span id=__span-1-29><a id=__codelineno-1-29 name=__codelineno-1-29 href=#__codelineno-1-29></a>    <span class=n>features</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'Age'</span><span class=p>,</span> <span class=s1>'Sex'</span><span class=p>,</span> <span class=s1>'BP'</span><span class=p>,</span> <span class=s1>'Cholesterol'</span><span class=p>,</span> <span class=s1>'Na_to_K'</span><span class=p>,</span> <span class=s1>'Drug'</span><span class=p>]</span>
+</span><span id=__span-1-30><a id=__codelineno-1-30 name=__codelineno-1-30 href=#__codelineno-1-30></a>    <span class=k>return</span> <span class=n>df</span><span class=p>[</span><span class=n>features</span><span class=p>]</span>
+</span><span id=__span-1-31><a id=__codelineno-1-31 name=__codelineno-1-31 href=#__codelineno-1-31></a>
+</span><span id=__span-1-32><a id=__codelineno-1-32 name=__codelineno-1-32 href=#__codelineno-1-32></a><span class=c1># Load the dataset</span>
+</span><span id=__span-1-33><a id=__codelineno-1-33 name=__codelineno-1-33 href=#__codelineno-1-33></a><span class=n>df</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>read_csv</span><span class=p>(</span><span class=s1>'data/kaggle/drug200.csv'</span><span class=p>)</span>
+</span><span id=__span-1-34><a id=__codelineno-1-34 name=__codelineno-1-34 href=#__codelineno-1-34></a><span class=n>df</span> <span class=o>=</span> <span class=n>df</span><span class=o>.</span><span class=n>sample</span><span class=p>(</span><span class=n>n</span><span class=o>=</span><span class=mi>10</span><span class=p>,</span> <span class=n>random_state</span><span class=o>=</span><span class=mi>42</span><span class=p>)</span>
+</span><span id=__span-1-35><a id=__codelineno-1-35 name=__codelineno-1-35 href=#__codelineno-1-35></a>
+</span><span id=__span-1-36><a id=__codelineno-1-36 name=__codelineno-1-36 href=#__codelineno-1-36></a><span class=c1># Preprocessing</span>
+</span><span id=__span-1-37><a id=__codelineno-1-37 name=__codelineno-1-37 href=#__codelineno-1-37></a><span class=n>df</span> <span class=o>=</span> <span class=n>preprocess</span><span class=p>(</span><span class=n>df</span><span class=p>)</span>
+</span><span id=__span-1-38><a id=__codelineno-1-38 name=__codelineno-1-38 href=#__codelineno-1-38></a>
+</span><span id=__span-1-39><a id=__codelineno-1-39 name=__codelineno-1-39 href=#__codelineno-1-39></a><span class=n>standardization</span><span class=p>(</span><span class=n>df</span><span class=p>)</span>
+</span></code></pre></div> </div> </div> </div> <h2 id=divisao-dos-dados>Divisão dos Dados</h2> <p>O conjunto de dados foi dividido em 70% para treino e 30% para validação, garantindo que o modelo fosse treinado em uma parte significativa das observações, mas ainda avaliado em dados não vistos. O uso do conjunto de validação tem como objetivo detectar e reduzir o risco de overfitting.</p> <h2 id=treinamento-do-modelo>Treinamento do Modelo</h2> <div class="tabbed-set tabbed-alternate" data-tabs=3:2><input checked=checked id=__tabbed_3_1 name=__tabbed_3 type=radio><input id=__tabbed_3_2 name=__tabbed_3 type=radio><div class=tabbed-labels><label for=__tabbed_3_1>Result 70% 30%</label><label for=__tabbed_3_2>Code</label></div> <div class=tabbed-content> <div class=tabbed-block> <p>Acurácia: 0.56% <br>Matriz de Confusão: </p><table border=1 class=dataframe> <thead> <tr style="text-align: right;"> <th></th> <th>Classe Pred 0</th> <th>Classe Pred 1</th> <th>Classe Pred 2</th> <th>Classe Pred 3</th> <th>Classe Pred 4</th> </tr> </thead> <tbody> <tr> <th>Classe Real 0</th> <td>0</td> <td>0</td> <td>0</td> <td>0</td> <td>17</td> </tr> <tr> <th>Classe Real 1</th> <td>0</td> <td>0</td> <td>0</td> <td>0</td> <td>13</td> </tr> <tr> <th>Classe Real 2</th> <td>0</td> <td>0</td> <td>0</td> <td>0</td> <td>11</td> </tr> <tr> <th>Classe Real 3</th> <td>0</td> <td>0</td> <td>0</td> <td>43</td> <td>0</td> </tr> <tr> <th>Classe Real 4</th> <td>0</td> <td>0</td> <td>0</td> <td>30</td> <td>46</td> </tr> </tbody> </table> <!--?xml version="1.0" encoding="utf-8" standalone="no"?--> <svg xmlns:xlink=http://www.w3.org/1999/xlink width=720pt height=576pt viewbox="0 0 720 576" xmlns=http://www.w3.org/2000/svg version=1.1> <metadata> <rdf:rdf xmlns:dc=http://purl.org/dc/elements/1.1/ xmlns:cc=http://creativecommons.org/ns# xmlns:rdf=http://www.w3.org/1999/02/22-rdf-syntax-ns#> <cc:work> <dc:type rdf:resource=http://purl.org/dc/dcmitype/StillImage></dc:type> <dc:date>2025-12-08T17:26:36.073952</dc:date> <dc:format>image/svg+xml</dc:format> <dc:creator> <cc:agent> <dc:title>Matplotlib v3.10.7, https://matplotlib.org/</dc:title> </cc:agent> </dc:creator> </cc:work> </rdf:rdf> </metadata> <defs> <style type=text/css>*{stroke-linejoin: round; stroke-linecap: butt}</style> </defs> <g id=figure_1> <g id=patch_1> <path d="M 0 576 
+L 720 576 
+L 720 0 
+L 0 0 
+L 0 576 
+z
+" style="fill: none"></path> </g> <g id=axes_1> <g id=patch_2> <path d="M 90 512.64 
+L 648 512.64 
+L 648 69.12 
+L 90 69.12 
+L 90 512.64 
+z
+" style="fill: none"></path> </g> <g id=PathCollection_1> <defs> <path id=C0_0_172f4a977e d="M 0 3.535534 
+C 0.937635 3.535534 1.836992 3.163008 2.5 2.5 
+C 3.163008 1.836992 3.535534 0.937635 3.535534 -0 
+C 3.535534 -0.937635 3.163008 -1.836992 2.5 -2.5 
+C 1.836992 -3.163008 0.937635 -3.535534 0 -3.535534 
+C -0.937635 -3.535534 -1.836992 -3.163008 -2.5 -2.5 
+C -3.163008 -1.836992 -3.535534 -0.937635 -3.535534 0 
+C -3.535534 0.937635 -3.163008 1.836992 -2.5 2.5 
+C -1.836992 3.163008 -0.937635 3.535534 0 3.535534 
+z
+"></path> </defs> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=355.294571 y=137.195398 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=621.297449 y=395.39653 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=586.58244 y=95.677416 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=381.455518 y=442.392959 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=615.965985 y=394.766054 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=390.350554 y=440.741483 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=387.55129 y=439.81483 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=119.375932 y=186.868159 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=125.152676 y=196.200755 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=619.934633 y=396.619918 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=585.813113 y=89.28 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=352.927305 y=143.448625 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=620.299663 y=385.039398 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=158.591789 y=489.351154 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=620.641431 y=391.556774 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=581.995672 y=101.857892 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=127.19422 y=184.180175 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=115.363636 y=186.988179 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=583.914738 y=98.824801 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=380.977824 y=452.568491 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=158.166271 y=472.167211 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=154.895462 y=489.867346 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=161.386148 y=489.130159 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=388.368279 y=438.081982 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=587.78221 y=96.953258 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=155.109498 y=491.537212 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=584.957421 y=101.823886 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=122.717083 y=195.229518 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=619.404238 y=401.474939 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=159.964448 y=483.502421 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=587.518037 y=105.338964 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=587.050096 y=93.587759 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=585.658335 y=98.305596 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=124.801754 y=190.463133 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=124.942044 y=180.301197 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=355.85501 y=149.22195 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=151.918915 y=483.767166 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=622.061022 y=401.031779 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=124.333113 y=180.635143 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=588.044368 y=97.028438 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=390.429899 y=437.18757 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=121.503196 y=182.051523 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=158.341359 y=478.49676 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=159.780291 y=480.643869 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=159.465628 y=471.787648 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=159.108491 y=486.050199 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=126.277365 y=188.337713 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=125.242675 y=179.946509 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=157.265447 y=487.840166 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=124.844137 y=177.340887 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=349.019681 y=150.365751 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=351.557226 y=153.908047 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=158.813369 y=481.015699 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=118.881145 y=200.139679 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=121.877599 y=184.68562 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=151.112885 y=490.485296 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=354.652211 y=138.722217 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=618.887141 y=397.086806 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=587.183722 y=98.812794 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=614.03952 y=394.732052 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=388.294417 y=445.089724 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=356.057079 y=142.831903 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=126.892759 y=188.765097 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=621.893902 y=398.153128 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=617.422409 y=388.818493 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=159.654699 y=477.716223 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=389.84319 y=437.879777 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=353.494403 y=152.775976 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=356.032774 y=137.477891 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=355.123147 y=139.320035 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=385.095796 y=447.710061 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=153.309611 y=479.050586 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=584.276528 y=92.246313 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=355.884555 y=151.878437 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=159.630483 y=489.663602 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=618.087159 y=393.032423 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=159.381297 y=486.112817 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=586.197924 y=100.360327 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=117.899162 y=184.381215 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=351.425494 y=144.451523 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=619.00517 y=406.175019 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=127.099782 y=193.134582 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=390.376734 y=438.019251 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=124.561692 y=180.365463 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=121.725106 y=182.558666 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=388.731389 y=439.57597 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=148.867218 y=482.369384 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=123.93593 y=179.181356 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=622.636364 y=398.430596 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=619.790954 y=382.948234 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=351.898719 y=148.506939 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=391.385288 y=444.134424 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=389.126733 y=442.18536 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=353.448557 y=141.295735 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=619.051567 y=386.896394 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=125.490246 y=186.959499 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=620.877724 y=386.664261 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=356.201443 y=138.047848 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=121.656098 y=181.102171 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=614.299184 y=392.887787 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=120.011248 y=182.273829 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=618.510888 y=393.685936 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=581.710903 y=108.345509 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=386.072166 y=435.023797 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=159.157333 y=486.377053 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=619.84136 y=397.498918 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=389.811375 y=435.610446 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=160.95968 y=480.405846 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=123.65201 y=185.283493 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=124.865958 y=182.697831 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=125.663165 y=185.602054 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=620.220657 y=399.358286 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=584.453056 y=102.418941 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=619.81234 y=400.2245 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=387.895779 y=450.558253 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=156.203997 y=479.865011 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=356.217005 y=141.10531 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=348.426592 y=152.987872 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=158.319578 y=480.829324 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=619.687473 y=386.530623 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=158.220965 y=492.48 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=155.763821 y=483.460158 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=620.005845 y=398.842767 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=123.29103 y=183.786993 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=356.801586 y=140.415615 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=126.724109 y=192.039894 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=386.673953 y=439.69649 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=157.114599 y=488.018138 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=388.255284 y=427.834396 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=587.465066 y=102.710115 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=612.156573 y=395.031186 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=120.641645 y=187.297245 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=616.143653 y=405.706293 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=153.25683 y=485.648978 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=620.03589 y=388.426422 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=389.442871 y=447.96402 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=621.185604 y=387.838932 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=354.534382 y=140.783621 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=386.16024 y=444.531829 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=392.829319 y=443.96865 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=389.372544 y=438.43505 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=350.948435 y=153.85735 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=389.914482 y=428.183723 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=618.409651 y=405.724186 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=160.583412 y=487.77037 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=621.820775 y=396.317015 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=121.834471 y=177.431425 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=588.009269 y=104.759403 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=389.592719 y=446.633794 style="fill: #21918c; stroke: #21918c"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=122.488154 y=182.811847 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=121.663747 y=177.632848 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=355.501799 y=140.02673 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=353.565016 y=148.84789 style="fill: #fde725; stroke: #fde725"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=117.773389 y=201.446622 style="fill: #3b528b; stroke: #3b528b"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=616.662145 y=391.637849 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=619.112046 y=386.440562 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=620.20346 y=395.918275 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=152.147065 y=482.729038 style="fill: #5ec962; stroke: #5ec962"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=619.89619 y=402.816917 style="fill: #440154; stroke: #440154"></use> </g> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#C0_0_172f4a977e x=388.439236 y=432.2311 style="fill: #21918c; stroke: #21918c"></use> </g> </g> <g id=PathCollection_2> <defs> <path id=m91842f43cf d="M 0 -7.071068 
+L -1.587554 -2.18508 
+L -6.724985 -2.18508 
+L -2.568716 0.834626 
+L -4.156269 5.720614 
+L -0 2.700907 
+L 4.156269 5.720614 
+L 2.568716 0.834626 
+L 6.724985 -2.18508 
+L 1.587554 -2.18508 
+z
+" style="stroke: #ff0000"></path> </defs> <g clip-path=url(#pb58d089e5d)> <use xlink:href=#m91842f43cf x=619.097061 y=394.814978 style="fill: #ff0000; stroke: #ff0000"></use> <use xlink:href=#m91842f43cf x=123.041705 y=185.700616 style="fill: #ff0000; stroke: #ff0000"></use> <use xlink:href=#m91842f43cf x=388.257875 y=440.642137 style="fill: #ff0000; stroke: #ff0000"></use> <use xlink:href=#m91842f43cf x=157.120365 y=484.073753 style="fill: #ff0000; stroke: #ff0000"></use> <use xlink:href=#m91842f43cf x=454.961023 y=125.020617 style="fill: #ff0000; stroke: #ff0000"></use> </g> </g> <g id=matplotlib.axis_1> <g id=xtick_1> <g id=line2d_1> <defs> <path id=m57e7929aa8 d="M 0 0 
+L 0 3.5 
+" style="stroke: #000000; stroke-width: 0.8"></path> </defs> <g> <use xlink:href=#m57e7929aa8 x=123.619227 y=512.64 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_1> <!-- −1.0 --> <g transform="translate(111.477821 527.238438) scale(0.1 -0.1)"> <defs> <path id=DejaVuSans-2212 d="M 678 2272 
+L 4684 2272 
+L 4684 1741 
+L 678 1741 
+L 678 2272 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-31 d="M 794 531 
+L 1825 531 
+L 1825 4091 
+L 703 3866 
+L 703 4441 
+L 1819 4666 
+L 2450 4666 
+L 2450 531 
+L 3481 531 
+L 3481 0 
+L 794 0 
+L 794 531 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-2e d="M 684 794 
+L 1344 794 
+L 1344 0 
+L 684 0 
+L 684 794 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-30 d="M 2034 4250 
+Q 1547 4250 1301 3770 
+Q 1056 3291 1056 2328 
+Q 1056 1369 1301 889 
+Q 1547 409 2034 409 
+Q 2525 409 2770 889 
+Q 3016 1369 3016 2328 
+Q 3016 3291 2770 3770 
+Q 2525 4250 2034 4250 
+z
+M 2034 4750 
+Q 2819 4750 3233 4129 
+Q 3647 3509 3647 2328 
+Q 3647 1150 3233 529 
+Q 2819 -91 2034 -91 
+Q 1250 -91 836 529 
+Q 422 1150 422 2328 
+Q 422 3509 836 4129 
+Q 1250 4750 2034 4750 
+z
+" transform=scale(0.015625)></path> </defs> <use xlink:href=#DejaVuSans-2212></use> <use xlink:href=#DejaVuSans-31 transform="translate(83.789062 0)"></use> <use xlink:href=#DejaVuSans-2e transform="translate(147.412109 0)"></use> <use xlink:href=#DejaVuSans-30 transform="translate(179.199219 0)"></use> </g> </g> </g> <g id=xtick_2> <g id=line2d_2> <g> <use xlink:href=#m57e7929aa8 x=240.297407 y=512.64 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_2> <!-- −0.5 --> <g transform="translate(228.156 527.238438) scale(0.1 -0.1)"> <defs> <path id=DejaVuSans-35 d="M 691 4666 
+L 3169 4666 
+L 3169 4134 
+L 1269 4134 
+L 1269 2991 
+Q 1406 3038 1543 3061 
+Q 1681 3084 1819 3084 
+Q 2600 3084 3056 2656 
+Q 3513 2228 3513 1497 
+Q 3513 744 3044 326 
+Q 2575 -91 1722 -91 
+Q 1428 -91 1123 -41 
+Q 819 9 494 109 
+L 494 744 
+Q 775 591 1075 516 
+Q 1375 441 1709 441 
+Q 2250 441 2565 725 
+Q 2881 1009 2881 1497 
+Q 2881 1984 2565 2268 
+Q 2250 2553 1709 2553 
+Q 1456 2553 1204 2497 
+Q 953 2441 691 2322 
+L 691 4666 
+z
+" transform=scale(0.015625)></path> </defs> <use xlink:href=#DejaVuSans-2212></use> <use xlink:href=#DejaVuSans-30 transform="translate(83.789062 0)"></use> <use xlink:href=#DejaVuSans-2e transform="translate(147.412109 0)"></use> <use xlink:href=#DejaVuSans-35 transform="translate(179.199219 0)"></use> </g> </g> </g> <g id=xtick_3> <g id=line2d_3> <g> <use xlink:href=#m57e7929aa8 x=356.975586 y=512.64 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_3> <!-- 0.0 --> <g transform="translate(349.024023 527.238438) scale(0.1 -0.1)"> <use xlink:href=#DejaVuSans-30></use> <use xlink:href=#DejaVuSans-2e transform="translate(63.623047 0)"></use> <use xlink:href=#DejaVuSans-30 transform="translate(95.410156 0)"></use> </g> </g> </g> <g id=xtick_4> <g id=line2d_4> <g> <use xlink:href=#m57e7929aa8 x=473.653765 y=512.64 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_4> <!-- 0.5 --> <g transform="translate(465.702202 527.238438) scale(0.1 -0.1)"> <use xlink:href=#DejaVuSans-30></use> <use xlink:href=#DejaVuSans-2e transform="translate(63.623047 0)"></use> <use xlink:href=#DejaVuSans-35 transform="translate(95.410156 0)"></use> </g> </g> </g> <g id=xtick_5> <g id=line2d_5> <g> <use xlink:href=#m57e7929aa8 x=590.331944 y=512.64 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_5> <!-- 1.0 --> <g transform="translate(582.380381 527.238438) scale(0.1 -0.1)"> <use xlink:href=#DejaVuSans-31></use> <use xlink:href=#DejaVuSans-2e transform="translate(63.623047 0)"></use> <use xlink:href=#DejaVuSans-30 transform="translate(95.410156 0)"></use> </g> </g> </g> <g id=text_6> <!-- Principal Component 1 --> <g transform="translate(312.305469 540.916563) scale(0.1 -0.1)"> <defs> <path id=DejaVuSans-50 d="M 1259 4147 
+L 1259 2394 
+L 2053 2394 
+Q 2494 2394 2734 2622 
+Q 2975 2850 2975 3272 
+Q 2975 3691 2734 3919 
+Q 2494 4147 2053 4147 
+L 1259 4147 
+z
+M 628 4666 
+L 2053 4666 
+Q 2838 4666 3239 4311 
+Q 3641 3956 3641 3272 
+Q 3641 2581 3239 2228 
+Q 2838 1875 2053 1875 
+L 1259 1875 
+L 1259 0 
+L 628 0 
+L 628 4666 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-72 d="M 2631 2963 
+Q 2534 3019 2420 3045 
+Q 2306 3072 2169 3072 
+Q 1681 3072 1420 2755 
+Q 1159 2438 1159 1844 
+L 1159 0 
+L 581 0 
+L 581 3500 
+L 1159 3500 
+L 1159 2956 
+Q 1341 3275 1631 3429 
+Q 1922 3584 2338 3584 
+Q 2397 3584 2469 3576 
+Q 2541 3569 2628 3553 
+L 2631 2963 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-69 d="M 603 3500 
+L 1178 3500 
+L 1178 0 
+L 603 0 
+L 603 3500 
+z
+M 603 4863 
+L 1178 4863 
+L 1178 4134 
+L 603 4134 
+L 603 4863 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-6e d="M 3513 2113 
+L 3513 0 
+L 2938 0 
+L 2938 2094 
+Q 2938 2591 2744 2837 
+Q 2550 3084 2163 3084 
+Q 1697 3084 1428 2787 
+Q 1159 2491 1159 1978 
+L 1159 0 
+L 581 0 
+L 581 3500 
+L 1159 3500 
+L 1159 2956 
+Q 1366 3272 1645 3428 
+Q 1925 3584 2291 3584 
+Q 2894 3584 3203 3211 
+Q 3513 2838 3513 2113 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-63 d="M 3122 3366 
+L 3122 2828 
+Q 2878 2963 2633 3030 
+Q 2388 3097 2138 3097 
+Q 1578 3097 1268 2742 
+Q 959 2388 959 1747 
+Q 959 1106 1268 751 
+Q 1578 397 2138 397 
+Q 2388 397 2633 464 
+Q 2878 531 3122 666 
+L 3122 134 
+Q 2881 22 2623 -34 
+Q 2366 -91 2075 -91 
+Q 1284 -91 818 406 
+Q 353 903 353 1747 
+Q 353 2603 823 3093 
+Q 1294 3584 2113 3584 
+Q 2378 3584 2631 3529 
+Q 2884 3475 3122 3366 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-70 d="M 1159 525 
+L 1159 -1331 
+L 581 -1331 
+L 581 3500 
+L 1159 3500 
+L 1159 2969 
+Q 1341 3281 1617 3432 
+Q 1894 3584 2278 3584 
+Q 2916 3584 3314 3078 
+Q 3713 2572 3713 1747 
+Q 3713 922 3314 415 
+Q 2916 -91 2278 -91 
+Q 1894 -91 1617 61 
+Q 1341 213 1159 525 
+z
+M 3116 1747 
+Q 3116 2381 2855 2742 
+Q 2594 3103 2138 3103 
+Q 1681 3103 1420 2742 
+Q 1159 2381 1159 1747 
+Q 1159 1113 1420 752 
+Q 1681 391 2138 391 
+Q 2594 391 2855 752 
+Q 3116 1113 3116 1747 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-61 d="M 2194 1759 
+Q 1497 1759 1228 1600 
+Q 959 1441 959 1056 
+Q 959 750 1161 570 
+Q 1363 391 1709 391 
+Q 2188 391 2477 730 
+Q 2766 1069 2766 1631 
+L 2766 1759 
+L 2194 1759 
+z
+M 3341 1997 
+L 3341 0 
+L 2766 0 
+L 2766 531 
+Q 2569 213 2275 61 
+Q 1981 -91 1556 -91 
+Q 1019 -91 701 211 
+Q 384 513 384 1019 
+Q 384 1609 779 1909 
+Q 1175 2209 1959 2209 
+L 2766 2209 
+L 2766 2266 
+Q 2766 2663 2505 2880 
+Q 2244 3097 1772 3097 
+Q 1472 3097 1187 3025 
+Q 903 2953 641 2809 
+L 641 3341 
+Q 956 3463 1253 3523 
+Q 1550 3584 1831 3584 
+Q 2591 3584 2966 3190 
+Q 3341 2797 3341 1997 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-6c d="M 603 4863 
+L 1178 4863 
+L 1178 0 
+L 603 0 
+L 603 4863 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-20 transform=scale(0.015625)></path> <path id=DejaVuSans-43 d="M 4122 4306 
+L 4122 3641 
+Q 3803 3938 3442 4084 
+Q 3081 4231 2675 4231 
+Q 1875 4231 1450 3742 
+Q 1025 3253 1025 2328 
+Q 1025 1406 1450 917 
+Q 1875 428 2675 428 
+Q 3081 428 3442 575 
+Q 3803 722 4122 1019 
+L 4122 359 
+Q 3791 134 3420 21 
+Q 3050 -91 2638 -91 
+Q 1578 -91 968 557 
+Q 359 1206 359 2328 
+Q 359 3453 968 4101 
+Q 1578 4750 2638 4750 
+Q 3056 4750 3426 4639 
+Q 3797 4528 4122 4306 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-6f d="M 1959 3097 
+Q 1497 3097 1228 2736 
+Q 959 2375 959 1747 
+Q 959 1119 1226 758 
+Q 1494 397 1959 397 
+Q 2419 397 2687 759 
+Q 2956 1122 2956 1747 
+Q 2956 2369 2687 2733 
+Q 2419 3097 1959 3097 
+z
+M 1959 3584 
+Q 2709 3584 3137 3096 
+Q 3566 2609 3566 1747 
+Q 3566 888 3137 398 
+Q 2709 -91 1959 -91 
+Q 1206 -91 779 398 
+Q 353 888 353 1747 
+Q 353 2609 779 3096 
+Q 1206 3584 1959 3584 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-6d d="M 3328 2828 
+Q 3544 3216 3844 3400 
+Q 4144 3584 4550 3584 
+Q 5097 3584 5394 3201 
+Q 5691 2819 5691 2113 
+L 5691 0 
+L 5113 0 
+L 5113 2094 
+Q 5113 2597 4934 2840 
+Q 4756 3084 4391 3084 
+Q 3944 3084 3684 2787 
+Q 3425 2491 3425 1978 
+L 3425 0 
+L 2847 0 
+L 2847 2094 
+Q 2847 2600 2669 2842 
+Q 2491 3084 2119 3084 
+Q 1678 3084 1418 2786 
+Q 1159 2488 1159 1978 
+L 1159 0 
+L 581 0 
+L 581 3500 
+L 1159 3500 
+L 1159 2956 
+Q 1356 3278 1631 3431 
+Q 1906 3584 2284 3584 
+Q 2666 3584 2933 3390 
+Q 3200 3197 3328 2828 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-65 d="M 3597 1894 
+L 3597 1613 
+L 953 1613 
+Q 991 1019 1311 708 
+Q 1631 397 2203 397 
+Q 2534 397 2845 478 
+Q 3156 559 3463 722 
+L 3463 178 
+Q 3153 47 2828 -22 
+Q 2503 -91 2169 -91 
+Q 1331 -91 842 396 
+Q 353 884 353 1716 
+Q 353 2575 817 3079 
+Q 1281 3584 2069 3584 
+Q 2775 3584 3186 3129 
+Q 3597 2675 3597 1894 
+z
+M 3022 2063 
+Q 3016 2534 2758 2815 
+Q 2500 3097 2075 3097 
+Q 1594 3097 1305 2825 
+Q 1016 2553 972 2059 
+L 3022 2063 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-74 d="M 1172 4494 
+L 1172 3500 
+L 2356 3500 
+L 2356 3053 
+L 1172 3053 
+L 1172 1153 
+Q 1172 725 1289 603 
+Q 1406 481 1766 481 
+L 2356 481 
+L 2356 0 
+L 1766 0 
+Q 1100 0 847 248 
+Q 594 497 594 1153 
+L 594 3053 
+L 172 3053 
+L 172 3500 
+L 594 3500 
+L 594 4494 
+L 1172 4494 
+z
+" transform=scale(0.015625)></path> </defs> <use xlink:href=#DejaVuSans-50></use> <use xlink:href=#DejaVuSans-72 transform="translate(58.552734 0)"></use> <use xlink:href=#DejaVuSans-69 transform="translate(99.666016 0)"></use> <use xlink:href=#DejaVuSans-6e transform="translate(127.449219 0)"></use> <use xlink:href=#DejaVuSans-63 transform="translate(190.828125 0)"></use> <use xlink:href=#DejaVuSans-69 transform="translate(245.808594 0)"></use> <use xlink:href=#DejaVuSans-70 transform="translate(273.591797 0)"></use> <use xlink:href=#DejaVuSans-61 transform="translate(337.068359 0)"></use> <use xlink:href=#DejaVuSans-6c transform="translate(398.347656 0)"></use> <use xlink:href=#DejaVuSans-20 transform="translate(426.130859 0)"></use> <use xlink:href=#DejaVuSans-43 transform="translate(457.917969 0)"></use> <use xlink:href=#DejaVuSans-6f transform="translate(527.742188 0)"></use> <use xlink:href=#DejaVuSans-6d transform="translate(588.923828 0)"></use> <use xlink:href=#DejaVuSans-70 transform="translate(686.335938 0)"></use> <use xlink:href=#DejaVuSans-6f transform="translate(749.8125 0)"></use> <use xlink:href=#DejaVuSans-6e transform="translate(810.994141 0)"></use> <use xlink:href=#DejaVuSans-65 transform="translate(874.373047 0)"></use> <use xlink:href=#DejaVuSans-6e transform="translate(935.896484 0)"></use> <use xlink:href=#DejaVuSans-74 transform="translate(999.275391 0)"></use> <use xlink:href=#DejaVuSans-20 transform="translate(1038.484375 0)"></use> <use xlink:href=#DejaVuSans-31 transform="translate(1070.271484 0)"></use> </g> </g> </g> <g id=matplotlib.axis_2> <g id=ytick_1> <g id=line2d_6> <defs> <path id=m228e333a28 d="M 0 0 
+L -3.5 0 
+" style="stroke: #000000; stroke-width: 0.8"></path> </defs> <g> <use xlink:href=#m228e333a28 x=90 y=488.944777 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_7> <!-- −0.6 --> <g transform="translate(58.717187 492.743996) scale(0.1 -0.1)"> <defs> <path id=DejaVuSans-36 d="M 2113 2584 
+Q 1688 2584 1439 2293 
+Q 1191 2003 1191 1497 
+Q 1191 994 1439 701 
+Q 1688 409 2113 409 
+Q 2538 409 2786 701 
+Q 3034 994 3034 1497 
+Q 3034 2003 2786 2293 
+Q 2538 2584 2113 2584 
+z
+M 3366 4563 
+L 3366 3988 
+Q 3128 4100 2886 4159 
+Q 2644 4219 2406 4219 
+Q 1781 4219 1451 3797 
+Q 1122 3375 1075 2522 
+Q 1259 2794 1537 2939 
+Q 1816 3084 2150 3084 
+Q 2853 3084 3261 2657 
+Q 3669 2231 3669 1497 
+Q 3669 778 3244 343 
+Q 2819 -91 2113 -91 
+Q 1303 -91 875 529 
+Q 447 1150 447 2328 
+Q 447 3434 972 4092 
+Q 1497 4750 2381 4750 
+Q 2619 4750 2861 4703 
+Q 3103 4656 3366 4563 
+z
+" transform=scale(0.015625)></path> </defs> <use xlink:href=#DejaVuSans-2212></use> <use xlink:href=#DejaVuSans-30 transform="translate(83.789062 0)"></use> <use xlink:href=#DejaVuSans-2e transform="translate(147.412109 0)"></use> <use xlink:href=#DejaVuSans-36 transform="translate(179.199219 0)"></use> </g> </g> </g> <g id=ytick_2> <g id=line2d_7> <g> <use xlink:href=#m228e333a28 x=90 y=429.050322 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_8> <!-- −0.4 --> <g transform="translate(58.717187 432.849541) scale(0.1 -0.1)"> <defs> <path id=DejaVuSans-34 d="M 2419 4116 
+L 825 1625 
+L 2419 1625 
+L 2419 4116 
+z
+M 2253 4666 
+L 3047 4666 
+L 3047 1625 
+L 3713 1625 
+L 3713 1100 
+L 3047 1100 
+L 3047 0 
+L 2419 0 
+L 2419 1100 
+L 313 1100 
+L 313 1709 
+L 2253 4666 
+z
+" transform=scale(0.015625)></path> </defs> <use xlink:href=#DejaVuSans-2212></use> <use xlink:href=#DejaVuSans-30 transform="translate(83.789062 0)"></use> <use xlink:href=#DejaVuSans-2e transform="translate(147.412109 0)"></use> <use xlink:href=#DejaVuSans-34 transform="translate(179.199219 0)"></use> </g> </g> </g> <g id=ytick_3> <g id=line2d_8> <g> <use xlink:href=#m228e333a28 x=90 y=369.155867 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_9> <!-- −0.2 --> <g transform="translate(58.717187 372.955086) scale(0.1 -0.1)"> <defs> <path id=DejaVuSans-32 d="M 1228 531 
+L 3431 531 
+L 3431 0 
+L 469 0 
+L 469 531 
+Q 828 903 1448 1529 
+Q 2069 2156 2228 2338 
+Q 2531 2678 2651 2914 
+Q 2772 3150 2772 3378 
+Q 2772 3750 2511 3984 
+Q 2250 4219 1831 4219 
+Q 1534 4219 1204 4116 
+Q 875 4013 500 3803 
+L 500 4441 
+Q 881 4594 1212 4672 
+Q 1544 4750 1819 4750 
+Q 2544 4750 2975 4387 
+Q 3406 4025 3406 3419 
+Q 3406 3131 3298 2873 
+Q 3191 2616 2906 2266 
+Q 2828 2175 2409 1742 
+Q 1991 1309 1228 531 
+z
+" transform=scale(0.015625)></path> </defs> <use xlink:href=#DejaVuSans-2212></use> <use xlink:href=#DejaVuSans-30 transform="translate(83.789062 0)"></use> <use xlink:href=#DejaVuSans-2e transform="translate(147.412109 0)"></use> <use xlink:href=#DejaVuSans-32 transform="translate(179.199219 0)"></use> </g> </g> </g> <g id=ytick_4> <g id=line2d_9> <g> <use xlink:href=#m228e333a28 x=90 y=309.261412 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_10> <!-- 0.0 --> <g transform="translate(67.096875 313.060631) scale(0.1 -0.1)"> <use xlink:href=#DejaVuSans-30></use> <use xlink:href=#DejaVuSans-2e transform="translate(63.623047 0)"></use> <use xlink:href=#DejaVuSans-30 transform="translate(95.410156 0)"></use> </g> </g> </g> <g id=ytick_5> <g id=line2d_10> <g> <use xlink:href=#m228e333a28 x=90 y=249.366957 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_11> <!-- 0.2 --> <g transform="translate(67.096875 253.166176) scale(0.1 -0.1)"> <use xlink:href=#DejaVuSans-30></use> <use xlink:href=#DejaVuSans-2e transform="translate(63.623047 0)"></use> <use xlink:href=#DejaVuSans-32 transform="translate(95.410156 0)"></use> </g> </g> </g> <g id=ytick_6> <g id=line2d_11> <g> <use xlink:href=#m228e333a28 x=90 y=189.472502 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_12> <!-- 0.4 --> <g transform="translate(67.096875 193.271721) scale(0.1 -0.1)"> <use xlink:href=#DejaVuSans-30></use> <use xlink:href=#DejaVuSans-2e transform="translate(63.623047 0)"></use> <use xlink:href=#DejaVuSans-34 transform="translate(95.410156 0)"></use> </g> </g> </g> <g id=ytick_7> <g id=line2d_12> <g> <use xlink:href=#m228e333a28 x=90 y=129.578047 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_13> <!-- 0.6 --> <g transform="translate(67.096875 133.377265) scale(0.1 -0.1)"> <use xlink:href=#DejaVuSans-30></use> <use xlink:href=#DejaVuSans-2e transform="translate(63.623047 0)"></use> <use xlink:href=#DejaVuSans-36 transform="translate(95.410156 0)"></use> </g> </g> </g> <g id=ytick_8> <g id=line2d_13> <g> <use xlink:href=#m228e333a28 x=90 y=69.683592 style="stroke: #000000; stroke-width: 0.8"></use> </g> </g> <g id=text_14> <!-- 0.8 --> <g transform="translate(67.096875 73.48281) scale(0.1 -0.1)"> <defs> <path id=DejaVuSans-38 d="M 2034 2216 
+Q 1584 2216 1326 1975 
+Q 1069 1734 1069 1313 
+Q 1069 891 1326 650 
+Q 1584 409 2034 409 
+Q 2484 409 2743 651 
+Q 3003 894 3003 1313 
+Q 3003 1734 2745 1975 
+Q 2488 2216 2034 2216 
+z
+M 1403 2484 
+Q 997 2584 770 2862 
+Q 544 3141 544 3541 
+Q 544 4100 942 4425 
+Q 1341 4750 2034 4750 
+Q 2731 4750 3128 4425 
+Q 3525 4100 3525 3541 
+Q 3525 3141 3298 2862 
+Q 3072 2584 2669 2484 
+Q 3125 2378 3379 2068 
+Q 3634 1759 3634 1313 
+Q 3634 634 3220 271 
+Q 2806 -91 2034 -91 
+Q 1263 -91 848 271 
+Q 434 634 434 1313 
+Q 434 1759 690 2068 
+Q 947 2378 1403 2484 
+z
+M 1172 3481 
+Q 1172 3119 1398 2916 
+Q 1625 2713 2034 2713 
+Q 2441 2713 2670 2916 
+Q 2900 3119 2900 3481 
+Q 2900 3844 2670 4047 
+Q 2441 4250 2034 4250 
+Q 1625 4250 1398 4047 
+Q 1172 3844 1172 3481 
+z
+" transform=scale(0.015625)></path> </defs> <use xlink:href=#DejaVuSans-30></use> <use xlink:href=#DejaVuSans-2e transform="translate(63.623047 0)"></use> <use xlink:href=#DejaVuSans-38 transform="translate(95.410156 0)"></use> </g> </g> </g> <g id=text_15> <!-- Principal Component 2 --> <g transform="translate(52.6375 347.574531) rotate(-90) scale(0.1 -0.1)"> <use xlink:href=#DejaVuSans-50></use> <use xlink:href=#DejaVuSans-72 transform="translate(58.552734 0)"></use> <use xlink:href=#DejaVuSans-69 transform="translate(99.666016 0)"></use> <use xlink:href=#DejaVuSans-6e transform="translate(127.449219 0)"></use> <use xlink:href=#DejaVuSans-63 transform="translate(190.828125 0)"></use> <use xlink:href=#DejaVuSans-69 transform="translate(245.808594 0)"></use> <use xlink:href=#DejaVuSans-70 transform="translate(273.591797 0)"></use> <use xlink:href=#DejaVuSans-61 transform="translate(337.068359 0)"></use> <use xlink:href=#DejaVuSans-6c transform="translate(398.347656 0)"></use> <use xlink:href=#DejaVuSans-20 transform="translate(426.130859 0)"></use> <use xlink:href=#DejaVuSans-43 transform="translate(457.917969 0)"></use> <use xlink:href=#DejaVuSans-6f transform="translate(527.742188 0)"></use> <use xlink:href=#DejaVuSans-6d transform="translate(588.923828 0)"></use> <use xlink:href=#DejaVuSans-70 transform="translate(686.335938 0)"></use> <use xlink:href=#DejaVuSans-6f transform="translate(749.8125 0)"></use> <use xlink:href=#DejaVuSans-6e transform="translate(810.994141 0)"></use> <use xlink:href=#DejaVuSans-65 transform="translate(874.373047 0)"></use> <use xlink:href=#DejaVuSans-6e transform="translate(935.896484 0)"></use> <use xlink:href=#DejaVuSans-74 transform="translate(999.275391 0)"></use> <use xlink:href=#DejaVuSans-20 transform="translate(1038.484375 0)"></use> <use xlink:href=#DejaVuSans-32 transform="translate(1070.271484 0)"></use> </g> </g> </g> <g id=patch_3> <path d="M 90 512.64 
+L 90 69.12 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path> </g> <g id=patch_4> <path d="M 648 512.64 
+L 648 69.12 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path> </g> <g id=patch_5> <path d="M 90 512.64 
+L 648 512.64 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path> </g> <g id=patch_6> <path d="M 90 69.12 
+L 648 69.12 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path> </g> <g id=text_16> <!-- K-Means Clustering (PCA 2D) --> <g transform="translate(282.73125 63.12) scale(0.12 -0.12)"> <defs> <path id=DejaVuSans-4b d="M 628 4666 
+L 1259 4666 
+L 1259 2694 
+L 3353 4666 
+L 4166 4666 
+L 1850 2491 
+L 4331 0 
+L 3500 0 
+L 1259 2247 
+L 1259 0 
+L 628 0 
+L 628 4666 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-2d d="M 313 2009 
+L 1997 2009 
+L 1997 1497 
+L 313 1497 
+L 313 2009 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-4d d="M 628 4666 
+L 1569 4666 
+L 2759 1491 
+L 3956 4666 
+L 4897 4666 
+L 4897 0 
+L 4281 0 
+L 4281 4097 
+L 3078 897 
+L 2444 897 
+L 1241 4097 
+L 1241 0 
+L 628 0 
+L 628 4666 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-73 d="M 2834 3397 
+L 2834 2853 
+Q 2591 2978 2328 3040 
+Q 2066 3103 1784 3103 
+Q 1356 3103 1142 2972 
+Q 928 2841 928 2578 
+Q 928 2378 1081 2264 
+Q 1234 2150 1697 2047 
+L 1894 2003 
+Q 2506 1872 2764 1633 
+Q 3022 1394 3022 966 
+Q 3022 478 2636 193 
+Q 2250 -91 1575 -91 
+Q 1294 -91 989 -36 
+Q 684 19 347 128 
+L 347 722 
+Q 666 556 975 473 
+Q 1284 391 1588 391 
+Q 1994 391 2212 530 
+Q 2431 669 2431 922 
+Q 2431 1156 2273 1281 
+Q 2116 1406 1581 1522 
+L 1381 1569 
+Q 847 1681 609 1914 
+Q 372 2147 372 2553 
+Q 372 3047 722 3315 
+Q 1072 3584 1716 3584 
+Q 2034 3584 2315 3537 
+Q 2597 3491 2834 3397 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-75 d="M 544 1381 
+L 544 3500 
+L 1119 3500 
+L 1119 1403 
+Q 1119 906 1312 657 
+Q 1506 409 1894 409 
+Q 2359 409 2629 706 
+Q 2900 1003 2900 1516 
+L 2900 3500 
+L 3475 3500 
+L 3475 0 
+L 2900 0 
+L 2900 538 
+Q 2691 219 2414 64 
+Q 2138 -91 1772 -91 
+Q 1169 -91 856 284 
+Q 544 659 544 1381 
+z
+M 1991 3584 
+L 1991 3584 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-67 d="M 2906 1791 
+Q 2906 2416 2648 2759 
+Q 2391 3103 1925 3103 
+Q 1463 3103 1205 2759 
+Q 947 2416 947 1791 
+Q 947 1169 1205 825 
+Q 1463 481 1925 481 
+Q 2391 481 2648 825 
+Q 2906 1169 2906 1791 
+z
+M 3481 434 
+Q 3481 -459 3084 -895 
+Q 2688 -1331 1869 -1331 
+Q 1566 -1331 1297 -1286 
+Q 1028 -1241 775 -1147 
+L 775 -588 
+Q 1028 -725 1275 -790 
+Q 1522 -856 1778 -856 
+Q 2344 -856 2625 -561 
+Q 2906 -266 2906 331 
+L 2906 616 
+Q 2728 306 2450 153 
+Q 2172 0 1784 0 
+Q 1141 0 747 490 
+Q 353 981 353 1791 
+Q 353 2603 747 3093 
+Q 1141 3584 1784 3584 
+Q 2172 3584 2450 3431 
+Q 2728 3278 2906 2969 
+L 2906 3500 
+L 3481 3500 
+L 3481 434 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-28 d="M 1984 4856 
+Q 1566 4138 1362 3434 
+Q 1159 2731 1159 2009 
+Q 1159 1288 1364 580 
+Q 1569 -128 1984 -844 
+L 1484 -844 
+Q 1016 -109 783 600 
+Q 550 1309 550 2009 
+Q 550 2706 781 3412 
+Q 1013 4119 1484 4856 
+L 1984 4856 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-41 d="M 2188 4044 
+L 1331 1722 
+L 3047 1722 
+L 2188 4044 
+z
+M 1831 4666 
+L 2547 4666 
+L 4325 0 
+L 3669 0 
+L 3244 1197 
+L 1141 1197 
+L 716 0 
+L 50 0 
+L 1831 4666 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-44 d="M 1259 4147 
+L 1259 519 
+L 2022 519 
+Q 2988 519 3436 956 
+Q 3884 1394 3884 2338 
+Q 3884 3275 3436 3711 
+Q 2988 4147 2022 4147 
+L 1259 4147 
+z
+M 628 4666 
+L 1925 4666 
+Q 3281 4666 3915 4102 
+Q 4550 3538 4550 2338 
+Q 4550 1131 3912 565 
+Q 3275 0 1925 0 
+L 628 0 
+L 628 4666 
+z
+" transform=scale(0.015625)></path> <path id=DejaVuSans-29 d="M 513 4856 
+L 1013 4856 
+Q 1481 4119 1714 3412 
+Q 1947 2706 1947 2009 
+Q 1947 1309 1714 600 
+Q 1481 -109 1013 -844 
+L 513 -844 
+Q 928 -128 1133 580 
+Q 1338 1288 1338 2009 
+Q 1338 2731 1133 3434 
+Q 928 4138 513 4856 
+z
+" transform=scale(0.015625)></path> </defs> <use xlink:href=#DejaVuSans-4b></use> <use xlink:href=#DejaVuSans-2d transform="translate(55.076172 0)"></use> <use xlink:href=#DejaVuSans-4d transform="translate(91.160156 0)"></use> <use xlink:href=#DejaVuSans-65 transform="translate(177.439453 0)"></use> <use xlink:href=#DejaVuSans-61 transform="translate(238.962891 0)"></use> <use xlink:href=#DejaVuSans-6e transform="translate(300.242188 0)"></use> <use xlink:href=#DejaVuSans-73 transform="translate(363.621094 0)"></use> <use xlink:href=#DejaVuSans-20 transform="translate(415.720703 0)"></use> <use xlink:href=#DejaVuSans-43 transform="translate(447.507812 0)"></use> <use xlink:href=#DejaVuSans-6c transform="translate(517.332031 0)"></use> <use xlink:href=#DejaVuSans-75 transform="translate(545.115234 0)"></use> <use xlink:href=#DejaVuSans-73 transform="translate(608.494141 0)"></use> <use xlink:href=#DejaVuSans-74 transform="translate(660.59375 0)"></use> <use xlink:href=#DejaVuSans-65 transform="translate(699.802734 0)"></use> <use xlink:href=#DejaVuSans-72 transform="translate(761.326172 0)"></use> <use xlink:href=#DejaVuSans-69 transform="translate(802.439453 0)"></use> <use xlink:href=#DejaVuSans-6e transform="translate(830.222656 0)"></use> <use xlink:href=#DejaVuSans-67 transform="translate(893.601562 0)"></use> <use xlink:href=#DejaVuSans-20 transform="translate(957.078125 0)"></use> <use xlink:href=#DejaVuSans-28 transform="translate(988.865234 0)"></use> <use xlink:href=#DejaVuSans-50 transform="translate(1027.878906 0)"></use> <use xlink:href=#DejaVuSans-43 transform="translate(1088.181641 0)"></use> <use xlink:href=#DejaVuSans-41 transform="translate(1158.005859 0)"></use> <use xlink:href=#DejaVuSans-20 transform="translate(1226.414062 0)"></use> <use xlink:href=#DejaVuSans-32 transform="translate(1258.201172 0)"></use> <use xlink:href=#DejaVuSans-44 transform="translate(1321.824219 0)"></use> <use xlink:href=#DejaVuSans-29 transform="translate(1398.826172 0)"></use> </g> </g> <g id=legend_1> <g id=patch_7> <path d="M 97 91.798125 
+L 176.734375 91.798125 
+Q 178.734375 91.798125 178.734375 89.798125 
+L 178.734375 76.12 
+Q 178.734375 74.12 176.734375 74.12 
+L 97 74.12 
+Q 95 74.12 95 76.12 
+L 95 89.798125 
+Q 95 91.798125 97 91.798125 
+z
+" style="fill: #ffffff; opacity: 0.8; stroke: #cccccc; stroke-linejoin: miter"></path> </g> <g id=PathCollection_3> <g> <use xlink:href=#m91842f43cf x=109 y=83.093438 style="fill: #ff0000; stroke: #ff0000"></use> </g> </g> <g id=text_17> <!-- Centroids --> <g transform="translate(127 85.718438) scale(0.1 -0.1)"> <defs> <path id=DejaVuSans-64 d="M 2906 2969 
+L 2906 4863 
+L 3481 4863 
+L 3481 0 
+L 2906 0 
+L 2906 525 
+Q 2725 213 2448 61 
+Q 2172 -91 1784 -91 
+Q 1150 -91 751 415 
+Q 353 922 353 1747 
+Q 353 2572 751 3078 
+Q 1150 3584 1784 3584 
+Q 2172 3584 2448 3432 
+Q 2725 3281 2906 2969 
+z
+M 947 1747 
+Q 947 1113 1208 752 
+Q 1469 391 1925 391 
+Q 2381 391 2643 752 
+Q 2906 1113 2906 1747 
+Q 2906 2381 2643 2742 
+Q 2381 3103 1925 3103 
+Q 1469 3103 1208 2742 
+Q 947 2381 947 1747 
+z
+" transform=scale(0.015625)></path> </defs> <use xlink:href=#DejaVuSans-43></use> <use xlink:href=#DejaVuSans-65 transform="translate(69.824219 0)"></use> <use xlink:href=#DejaVuSans-6e transform="translate(131.347656 0)"></use> <use xlink:href=#DejaVuSans-74 transform="translate(194.726562 0)"></use> <use xlink:href=#DejaVuSans-72 transform="translate(233.935547 0)"></use> <use xlink:href=#DejaVuSans-6f transform="translate(272.798828 0)"></use> <use xlink:href=#DejaVuSans-69 transform="translate(333.980469 0)"></use> <use xlink:href=#DejaVuSans-64 transform="translate(361.763672 0)"></use> <use xlink:href=#DejaVuSans-73 transform="translate(425.240234 0)"></use> </g> </g> </g> </g> </g> <defs> <clippath id=pb58d089e5d> <rect x=90 y=69.12 width=558 height=443.52></rect> </clippath> </defs> </svg> <p></p> </div> <div class=tabbed-block> <div class="language-python highlight"><pre><span></span><code><span id=__span-2-1><a id=__codelineno-2-1 name=__codelineno-2-1 href=#__codelineno-2-1></a><span class=kn>import</span><span class=w> </span><span class=nn>numpy</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=nn>np</span>
+</span><span id=__span-2-2><a id=__codelineno-2-2 name=__codelineno-2-2 href=#__codelineno-2-2></a><span class=kn>import</span><span class=w> </span><span class=nn>matplotlib.pyplot</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=nn>plt</span>
+</span><span id=__span-2-3><a id=__codelineno-2-3 name=__codelineno-2-3 href=#__codelineno-2-3></a><span class=kn>from</span><span class=w> </span><span class=nn>io</span><span class=w> </span><span class=kn>import</span> <span class=n>StringIO</span>
+</span><span id=__span-2-4><a id=__codelineno-2-4 name=__codelineno-2-4 href=#__codelineno-2-4></a><span class=kn>import</span><span class=w> </span><span class=nn>pandas</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=nn>pd</span>
+</span><span id=__span-2-5><a id=__codelineno-2-5 name=__codelineno-2-5 href=#__codelineno-2-5></a><span class=kn>from</span><span class=w> </span><span class=nn>scipy.stats</span><span class=w> </span><span class=kn>import</span> <span class=n>mode</span>
+</span><span id=__span-2-6><a id=__codelineno-2-6 name=__codelineno-2-6 href=#__codelineno-2-6></a><span class=kn>from</span><span class=w> </span><span class=nn>sklearn.preprocessing</span><span class=w> </span><span class=kn>import</span> <span class=n>LabelEncoder</span>
+</span><span id=__span-2-7><a id=__codelineno-2-7 name=__codelineno-2-7 href=#__codelineno-2-7></a><span class=kn>from</span><span class=w> </span><span class=nn>sklearn.cluster</span><span class=w> </span><span class=kn>import</span> <span class=n>KMeans</span>
+</span><span id=__span-2-8><a id=__codelineno-2-8 name=__codelineno-2-8 href=#__codelineno-2-8></a><span class=kn>from</span><span class=w> </span><span class=nn>sklearn.model_selection</span><span class=w> </span><span class=kn>import</span> <span class=n>train_test_split</span>
+</span><span id=__span-2-9><a id=__codelineno-2-9 name=__codelineno-2-9 href=#__codelineno-2-9></a><span class=kn>from</span><span class=w> </span><span class=nn>sklearn.metrics</span><span class=w> </span><span class=kn>import</span> <span class=n>accuracy_score</span><span class=p>,</span> <span class=n>confusion_matrix</span>
+</span><span id=__span-2-10><a id=__codelineno-2-10 name=__codelineno-2-10 href=#__codelineno-2-10></a><span class=kn>from</span><span class=w> </span><span class=nn>sklearn.decomposition</span><span class=w> </span><span class=kn>import</span> <span class=n>PCA</span>  
+</span><span id=__span-2-11><a id=__codelineno-2-11 name=__codelineno-2-11 href=#__codelineno-2-11></a>
+</span><span id=__span-2-12><a id=__codelineno-2-12 name=__codelineno-2-12 href=#__codelineno-2-12></a>
+</span><span id=__span-2-13><a id=__codelineno-2-13 name=__codelineno-2-13 href=#__codelineno-2-13></a><span class=n>plt</span><span class=o>.</span><span class=n>figure</span><span class=p>(</span><span class=n>figsize</span><span class=o>=</span><span class=p>(</span><span class=mi>12</span><span class=p>,</span> <span class=mi>10</span><span class=p>))</span>
+</span><span id=__span-2-14><a id=__codelineno-2-14 name=__codelineno-2-14 href=#__codelineno-2-14></a>
+</span><span id=__span-2-15><a id=__codelineno-2-15 name=__codelineno-2-15 href=#__codelineno-2-15></a><span class=k>def</span><span class=w> </span><span class=nf>standardization</span><span class=p>(</span><span class=n>df</span><span class=p>):</span>
+</span><span id=__span-2-16><a id=__codelineno-2-16 name=__codelineno-2-16 href=#__codelineno-2-16></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Z-Age'</span><span class=p>]</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>apply</span><span class=p>(</span><span class=k>lambda</span> <span class=n>x</span><span class=p>:</span> <span class=p>(</span><span class=n>x</span> <span class=o>-</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>mean</span><span class=p>())</span> <span class=o>/</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>std</span><span class=p>())</span>
+</span><span id=__span-2-17><a id=__codelineno-2-17 name=__codelineno-2-17 href=#__codelineno-2-17></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'N-Age'</span><span class=p>]</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>apply</span><span class=p>(</span><span class=k>lambda</span> <span class=n>x</span><span class=p>:</span> <span class=p>(</span><span class=n>x</span> <span class=o>-</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>min</span><span class=p>())</span> <span class=o>/</span> <span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>max</span><span class=p>()</span> <span class=o>-</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>min</span><span class=p>()))</span>
+</span><span id=__span-2-18><a id=__codelineno-2-18 name=__codelineno-2-18 href=#__codelineno-2-18></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Z-Na_to_K'</span><span class=p>]</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>apply</span><span class=p>(</span><span class=k>lambda</span> <span class=n>x</span><span class=p>:</span> <span class=p>(</span><span class=n>x</span> <span class=o>-</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>mean</span><span class=p>())</span> <span class=o>/</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>std</span><span class=p>())</span>
+</span><span id=__span-2-19><a id=__codelineno-2-19 name=__codelineno-2-19 href=#__codelineno-2-19></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'N-Na_to_K'</span><span class=p>]</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>apply</span><span class=p>(</span><span class=k>lambda</span> <span class=n>x</span><span class=p>:</span> <span class=p>(</span><span class=n>x</span> <span class=o>-</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>min</span><span class=p>())</span> <span class=o>/</span> <span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>max</span><span class=p>()</span> <span class=o>-</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>min</span><span class=p>()))</span>
+</span><span id=__span-2-20><a id=__codelineno-2-20 name=__codelineno-2-20 href=#__codelineno-2-20></a>    <span class=n>features</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'N-Age'</span><span class=p>,</span> <span class=s1>'Sex'</span><span class=p>,</span> <span class=s1>'BP'</span><span class=p>,</span> <span class=s1>'Cholesterol'</span><span class=p>,</span> <span class=s1>'N-Na_to_K'</span><span class=p>,</span> <span class=s1>'Drug'</span><span class=p>]</span>
+</span><span id=__span-2-21><a id=__codelineno-2-21 name=__codelineno-2-21 href=#__codelineno-2-21></a>    <span class=k>return</span> <span class=n>df</span><span class=p>[</span><span class=n>features</span><span class=p>]</span>
+</span><span id=__span-2-22><a id=__codelineno-2-22 name=__codelineno-2-22 href=#__codelineno-2-22></a>
+</span><span id=__span-2-23><a id=__codelineno-2-23 name=__codelineno-2-23 href=#__codelineno-2-23></a><span class=k>def</span><span class=w> </span><span class=nf>preprocess</span><span class=p>(</span><span class=n>df</span><span class=p>):</span>
+</span><span id=__span-2-24><a id=__codelineno-2-24 name=__codelineno-2-24 href=#__codelineno-2-24></a>    <span class=c1># Fill missing values</span>
+</span><span id=__span-2-25><a id=__codelineno-2-25 name=__codelineno-2-25 href=#__codelineno-2-25></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Age'</span><span class=p>]</span><span class=o>.</span><span class=n>median</span><span class=p>(),</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-2-26><a id=__codelineno-2-26 name=__codelineno-2-26 href=#__codelineno-2-26></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-2-27><a id=__codelineno-2-27 name=__codelineno-2-27 href=#__codelineno-2-27></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-2-28><a id=__codelineno-2-28 name=__codelineno-2-28 href=#__codelineno-2-28></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-2-29><a id=__codelineno-2-29 name=__codelineno-2-29 href=#__codelineno-2-29></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Na_to_K'</span><span class=p>]</span><span class=o>.</span><span class=n>median</span><span class=p>(),</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-2-30><a id=__codelineno-2-30 name=__codelineno-2-30 href=#__codelineno-2-30></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Drug'</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Drug'</span><span class=p>]</span><span class=o>.</span><span class=n>mode</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-2-31><a id=__codelineno-2-31 name=__codelineno-2-31 href=#__codelineno-2-31></a>
+</span><span id=__span-2-32><a id=__codelineno-2-32 name=__codelineno-2-32 href=#__codelineno-2-32></a>    <span class=c1># Convert categorical variables</span>
+</span><span id=__span-2-33><a id=__codelineno-2-33 name=__codelineno-2-33 href=#__codelineno-2-33></a>    <span class=n>label_encoder</span> <span class=o>=</span> <span class=n>LabelEncoder</span><span class=p>()</span>
+</span><span id=__span-2-34><a id=__codelineno-2-34 name=__codelineno-2-34 href=#__codelineno-2-34></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>]</span> <span class=o>=</span> <span class=n>label_encoder</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Sex'</span><span class=p>])</span>
+</span><span id=__span-2-35><a id=__codelineno-2-35 name=__codelineno-2-35 href=#__codelineno-2-35></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>]</span> <span class=o>=</span> <span class=n>label_encoder</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'BP'</span><span class=p>])</span>
+</span><span id=__span-2-36><a id=__codelineno-2-36 name=__codelineno-2-36 href=#__codelineno-2-36></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>]</span> <span class=o>=</span> <span class=n>label_encoder</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Cholesterol'</span><span class=p>])</span>
+</span><span id=__span-2-37><a id=__codelineno-2-37 name=__codelineno-2-37 href=#__codelineno-2-37></a>    <span class=n>df</span><span class=p>[</span><span class=s1>'Drug'</span><span class=p>]</span> <span class=o>=</span> <span class=n>label_encoder</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>'Drug'</span><span class=p>])</span>
+</span><span id=__span-2-38><a id=__codelineno-2-38 name=__codelineno-2-38 href=#__codelineno-2-38></a>
+</span><span id=__span-2-39><a id=__codelineno-2-39 name=__codelineno-2-39 href=#__codelineno-2-39></a>    <span class=n>features</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'Age'</span><span class=p>,</span> <span class=s1>'Sex'</span><span class=p>,</span> <span class=s1>'BP'</span><span class=p>,</span> <span class=s1>'Cholesterol'</span><span class=p>,</span> <span class=s1>'Na_to_K'</span><span class=p>,</span> <span class=s1>'Drug'</span><span class=p>]</span>
+</span><span id=__span-2-40><a id=__codelineno-2-40 name=__codelineno-2-40 href=#__codelineno-2-40></a>    <span class=k>return</span> <span class=n>df</span><span class=p>[</span><span class=n>features</span><span class=p>]</span>
+</span><span id=__span-2-41><a id=__codelineno-2-41 name=__codelineno-2-41 href=#__codelineno-2-41></a>
+</span><span id=__span-2-42><a id=__codelineno-2-42 name=__codelineno-2-42 href=#__codelineno-2-42></a><span class=n>label_encoder</span> <span class=o>=</span> <span class=n>LabelEncoder</span><span class=p>()</span>
+</span><span id=__span-2-43><a id=__codelineno-2-43 name=__codelineno-2-43 href=#__codelineno-2-43></a><span class=c1># Load dataset</span>
+</span><span id=__span-2-44><a id=__codelineno-2-44 name=__codelineno-2-44 href=#__codelineno-2-44></a><span class=n>df</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>read_csv</span><span class=p>(</span><span class=s1>'data/kaggle/drug200.csv'</span><span class=p>)</span>
+</span><span id=__span-2-45><a id=__codelineno-2-45 name=__codelineno-2-45 href=#__codelineno-2-45></a>
+</span><span id=__span-2-46><a id=__codelineno-2-46 name=__codelineno-2-46 href=#__codelineno-2-46></a><span class=c1># Preprocessing</span>
+</span><span id=__span-2-47><a id=__codelineno-2-47 name=__codelineno-2-47 href=#__codelineno-2-47></a><span class=n>d</span> <span class=o>=</span> <span class=n>preprocess</span><span class=p>(</span><span class=n>df</span><span class=o>.</span><span class=n>copy</span><span class=p>())</span>
+</span><span id=__span-2-48><a id=__codelineno-2-48 name=__codelineno-2-48 href=#__codelineno-2-48></a><span class=n>d</span> <span class=o>=</span> <span class=n>standardization</span><span class=p>(</span><span class=n>d</span><span class=p>)</span>
+</span><span id=__span-2-49><a id=__codelineno-2-49 name=__codelineno-2-49 href=#__codelineno-2-49></a>
+</span><span id=__span-2-50><a id=__codelineno-2-50 name=__codelineno-2-50 href=#__codelineno-2-50></a><span class=n>X</span> <span class=o>=</span> <span class=n>d</span><span class=p>[[</span><span class=s1>'N-Age'</span><span class=p>,</span> <span class=s1>'BP'</span><span class=p>,</span> <span class=s1>'Cholesterol'</span><span class=p>,</span> <span class=s1>'N-Na_to_K'</span><span class=p>]]</span>
+</span><span id=__span-2-51><a id=__codelineno-2-51 name=__codelineno-2-51 href=#__codelineno-2-51></a><span class=n>y</span> <span class=o>=</span> <span class=n>d</span><span class=p>[</span><span class=s1>'Drug'</span><span class=p>]</span>
+</span><span id=__span-2-52><a id=__codelineno-2-52 name=__codelineno-2-52 href=#__codelineno-2-52></a>
+</span><span id=__span-2-53><a id=__codelineno-2-53 name=__codelineno-2-53 href=#__codelineno-2-53></a><span class=c1>#Separar em teste e validação</span>
+</span><span id=__span-2-54><a id=__codelineno-2-54 name=__codelineno-2-54 href=#__codelineno-2-54></a><span class=n>X_train</span><span class=p>,</span> <span class=n>X_test</span><span class=p>,</span> <span class=n>y_train</span><span class=p>,</span> <span class=n>y_test</span> <span class=o>=</span> <span class=n>train_test_split</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>y</span><span class=p>,</span> <span class=n>test_size</span><span class=o>=</span><span class=mf>0.2</span><span class=p>,</span> <span class=n>random_state</span><span class=o>=</span><span class=mi>42</span><span class=p>)</span>
+</span><span id=__span-2-55><a id=__codelineno-2-55 name=__codelineno-2-55 href=#__codelineno-2-55></a>
+</span><span id=__span-2-56><a id=__codelineno-2-56 name=__codelineno-2-56 href=#__codelineno-2-56></a><span class=c1># Reduzir para 2 dimensões com PCA</span>
+</span><span id=__span-2-57><a id=__codelineno-2-57 name=__codelineno-2-57 href=#__codelineno-2-57></a><span class=n>pca</span> <span class=o>=</span> <span class=n>PCA</span><span class=p>(</span><span class=n>n_components</span><span class=o>=</span><span class=mi>2</span><span class=p>)</span>
+</span><span id=__span-2-58><a id=__codelineno-2-58 name=__codelineno-2-58 href=#__codelineno-2-58></a><span class=n>X_pca</span> <span class=o>=</span> <span class=n>pca</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>X_train</span><span class=p>)</span>
+</span><span id=__span-2-59><a id=__codelineno-2-59 name=__codelineno-2-59 href=#__codelineno-2-59></a>
+</span><span id=__span-2-60><a id=__codelineno-2-60 name=__codelineno-2-60 href=#__codelineno-2-60></a><span class=c1># Treinar KMeans</span>
+</span><span id=__span-2-61><a id=__codelineno-2-61 name=__codelineno-2-61 href=#__codelineno-2-61></a><span class=n>kmeans</span> <span class=o>=</span> <span class=n>KMeans</span><span class=p>(</span><span class=n>n_clusters</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=n>init</span><span class=o>=</span><span class=s2>"k-means++"</span><span class=p>,</span> <span class=n>max_iter</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span> <span class=n>random_state</span><span class=o>=</span><span class=mi>42</span><span class=p>)</span>
+</span><span id=__span-2-62><a id=__codelineno-2-62 name=__codelineno-2-62 href=#__codelineno-2-62></a><span class=n>labels</span> <span class=o>=</span> <span class=n>kmeans</span><span class=o>.</span><span class=n>fit_predict</span><span class=p>(</span><span class=n>X_pca</span><span class=p>)</span>
+</span><span id=__span-2-63><a id=__codelineno-2-63 name=__codelineno-2-63 href=#__codelineno-2-63></a>
+</span><span id=__span-2-64><a id=__codelineno-2-64 name=__codelineno-2-64 href=#__codelineno-2-64></a><span class=c1># Mapear clusters para classes reais por voto majoritário</span>
+</span><span id=__span-2-65><a id=__codelineno-2-65 name=__codelineno-2-65 href=#__codelineno-2-65></a><span class=n>cluster_map</span> <span class=o>=</span> <span class=p>{}</span>
+</span><span id=__span-2-66><a id=__codelineno-2-66 name=__codelineno-2-66 href=#__codelineno-2-66></a><span class=k>for</span> <span class=n>c</span> <span class=ow>in</span> <span class=n>np</span><span class=o>.</span><span class=n>unique</span><span class=p>(</span><span class=n>labels</span><span class=p>):</span>
+</span><span id=__span-2-67><a id=__codelineno-2-67 name=__codelineno-2-67 href=#__codelineno-2-67></a>    <span class=n>mask</span> <span class=o>=</span> <span class=n>labels</span> <span class=o>==</span> <span class=n>c</span>
+</span><span id=__span-2-68><a id=__codelineno-2-68 name=__codelineno-2-68 href=#__codelineno-2-68></a>    <span class=n>majority_class</span> <span class=o>=</span> <span class=n>mode</span><span class=p>(</span><span class=n>y_train</span><span class=p>[</span><span class=n>mask</span><span class=p>],</span> <span class=n>keepdims</span><span class=o>=</span><span class=kc>False</span><span class=p>)[</span><span class=mi>0</span><span class=p>]</span>
+</span><span id=__span-2-69><a id=__codelineno-2-69 name=__codelineno-2-69 href=#__codelineno-2-69></a>    <span class=n>cluster_map</span><span class=p>[</span><span class=n>c</span><span class=p>]</span> <span class=o>=</span> <span class=n>majority_class</span>
+</span><span id=__span-2-70><a id=__codelineno-2-70 name=__codelineno-2-70 href=#__codelineno-2-70></a>
+</span><span id=__span-2-71><a id=__codelineno-2-71 name=__codelineno-2-71 href=#__codelineno-2-71></a><span class=c1># Reatribuir clusters como classes previstas</span>
+</span><span id=__span-2-72><a id=__codelineno-2-72 name=__codelineno-2-72 href=#__codelineno-2-72></a><span class=n>y_pred</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>([</span><span class=n>cluster_map</span><span class=p>[</span><span class=n>c</span><span class=p>]</span> <span class=k>for</span> <span class=n>c</span> <span class=ow>in</span> <span class=n>labels</span><span class=p>])</span>
+</span><span id=__span-2-73><a id=__codelineno-2-73 name=__codelineno-2-73 href=#__codelineno-2-73></a>
+</span><span id=__span-2-74><a id=__codelineno-2-74 name=__codelineno-2-74 href=#__codelineno-2-74></a><span class=c1># Calcular acurácia e matriz de confusão</span>
+</span><span id=__span-2-75><a id=__codelineno-2-75 name=__codelineno-2-75 href=#__codelineno-2-75></a><span class=n>acc</span> <span class=o>=</span> <span class=n>accuracy_score</span><span class=p>(</span><span class=n>y_train</span><span class=p>,</span> <span class=n>y_pred</span><span class=p>)</span>
+</span><span id=__span-2-76><a id=__codelineno-2-76 name=__codelineno-2-76 href=#__codelineno-2-76></a><span class=n>cm</span> <span class=o>=</span> <span class=n>confusion_matrix</span><span class=p>(</span><span class=n>y_train</span><span class=p>,</span> <span class=n>y_pred</span><span class=p>)</span>
+</span><span id=__span-2-77><a id=__codelineno-2-77 name=__codelineno-2-77 href=#__codelineno-2-77></a>
+</span><span id=__span-2-78><a id=__codelineno-2-78 name=__codelineno-2-78 href=#__codelineno-2-78></a><span class=n>cm_df</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>DataFrame</span><span class=p>(</span>
+</span><span id=__span-2-79><a id=__codelineno-2-79 name=__codelineno-2-79 href=#__codelineno-2-79></a>    <span class=n>cm</span><span class=p>,</span>
+</span><span id=__span-2-80><a id=__codelineno-2-80 name=__codelineno-2-80 href=#__codelineno-2-80></a>    <span class=n>index</span><span class=o>=</span><span class=p>[</span><span class=sa>f</span><span class=s2>"Classe Real </span><span class=si>{</span><span class=bp>cls</span><span class=si>}</span><span class=s2>"</span> <span class=k>for</span> <span class=bp>cls</span> <span class=ow>in</span> <span class=n>np</span><span class=o>.</span><span class=n>unique</span><span class=p>(</span><span class=n>y_train</span><span class=p>)],</span>
+</span><span id=__span-2-81><a id=__codelineno-2-81 name=__codelineno-2-81 href=#__codelineno-2-81></a>    <span class=n>columns</span><span class=o>=</span><span class=p>[</span><span class=sa>f</span><span class=s2>"Classe Pred </span><span class=si>{</span><span class=bp>cls</span><span class=si>}</span><span class=s2>"</span> <span class=k>for</span> <span class=bp>cls</span> <span class=ow>in</span> <span class=n>np</span><span class=o>.</span><span class=n>unique</span><span class=p>(</span><span class=n>y_train</span><span class=p>)]</span>
+</span><span id=__span-2-82><a id=__codelineno-2-82 name=__codelineno-2-82 href=#__codelineno-2-82></a><span class=p>)</span>
+</span><span id=__span-2-83><a id=__codelineno-2-83 name=__codelineno-2-83 href=#__codelineno-2-83></a>
+</span><span id=__span-2-84><a id=__codelineno-2-84 name=__codelineno-2-84 href=#__codelineno-2-84></a><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"Acurácia: </span><span class=si>{</span><span class=n>acc</span><span class=si>:</span><span class=s2>.2f</span><span class=si>}</span><span class=s2>%"</span><span class=p>)</span>
+</span><span id=__span-2-85><a id=__codelineno-2-85 name=__codelineno-2-85 href=#__codelineno-2-85></a><span class=nb>print</span><span class=p>(</span><span class=s2>"&lt;br&gt;Matriz de Confusão:"</span><span class=p>)</span>
+</span><span id=__span-2-86><a id=__codelineno-2-86 name=__codelineno-2-86 href=#__codelineno-2-86></a><span class=nb>print</span><span class=p>(</span><span class=n>cm_df</span><span class=o>.</span><span class=n>to_html</span><span class=p>())</span>
+</span><span id=__span-2-87><a id=__codelineno-2-87 name=__codelineno-2-87 href=#__codelineno-2-87></a>
+</span><span id=__span-2-88><a id=__codelineno-2-88 name=__codelineno-2-88 href=#__codelineno-2-88></a><span class=c1># Também projetar os centróides no PCA</span>
+</span><span id=__span-2-89><a id=__codelineno-2-89 name=__codelineno-2-89 href=#__codelineno-2-89></a><span class=n>centroids_pca</span> <span class=o>=</span> <span class=n>kmeans</span><span class=o>.</span><span class=n>cluster_centers_</span>
+</span><span id=__span-2-90><a id=__codelineno-2-90 name=__codelineno-2-90 href=#__codelineno-2-90></a>
+</span><span id=__span-2-91><a id=__codelineno-2-91 name=__codelineno-2-91 href=#__codelineno-2-91></a>
+</span><span id=__span-2-92><a id=__codelineno-2-92 name=__codelineno-2-92 href=#__codelineno-2-92></a><span class=c1># Plot results</span>
+</span><span id=__span-2-93><a id=__codelineno-2-93 name=__codelineno-2-93 href=#__codelineno-2-93></a><span class=n>plt</span><span class=o>.</span><span class=n>figure</span><span class=p>(</span><span class=n>figsize</span><span class=o>=</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span> <span class=mi>8</span><span class=p>))</span>
+</span><span id=__span-2-94><a id=__codelineno-2-94 name=__codelineno-2-94 href=#__codelineno-2-94></a><span class=n>plt</span><span class=o>.</span><span class=n>scatter</span><span class=p>(</span><span class=n>X_pca</span><span class=p>[:,</span> <span class=mi>0</span><span class=p>],</span> <span class=n>X_pca</span><span class=p>[:,</span> <span class=mi>1</span><span class=p>],</span> <span class=n>c</span><span class=o>=</span><span class=n>labels</span><span class=p>,</span> <span class=n>cmap</span><span class=o>=</span><span class=s1>'viridis'</span><span class=p>,</span> <span class=n>s</span><span class=o>=</span><span class=mi>50</span><span class=p>)</span>
+</span><span id=__span-2-95><a id=__codelineno-2-95 name=__codelineno-2-95 href=#__codelineno-2-95></a><span class=n>plt</span><span class=o>.</span><span class=n>scatter</span><span class=p>(</span><span class=n>centroids_pca</span><span class=p>[:,</span> <span class=mi>0</span><span class=p>],</span> <span class=n>centroids_pca</span><span class=p>[:,</span> <span class=mi>1</span><span class=p>],</span> 
+</span><span id=__span-2-96><a id=__codelineno-2-96 name=__codelineno-2-96 href=#__codelineno-2-96></a>           <span class=n>c</span><span class=o>=</span><span class=s1>'red'</span><span class=p>,</span> <span class=n>marker</span><span class=o>=</span><span class=s1>'*'</span><span class=p>,</span> <span class=n>s</span><span class=o>=</span><span class=mi>200</span><span class=p>,</span> <span class=n>label</span><span class=o>=</span><span class=s1>'Centroids'</span><span class=p>)</span>
+</span><span id=__span-2-97><a id=__codelineno-2-97 name=__codelineno-2-97 href=#__codelineno-2-97></a><span class=n>plt</span><span class=o>.</span><span class=n>title</span><span class=p>(</span><span class=s1>'K-Means Clustering (PCA 2D)'</span><span class=p>)</span>
+</span><span id=__span-2-98><a id=__codelineno-2-98 name=__codelineno-2-98 href=#__codelineno-2-98></a><span class=n>plt</span><span class=o>.</span><span class=n>xlabel</span><span class=p>(</span><span class=s1>'Principal Component 1'</span><span class=p>)</span>
+</span><span id=__span-2-99><a id=__codelineno-2-99 name=__codelineno-2-99 href=#__codelineno-2-99></a><span class=n>plt</span><span class=o>.</span><span class=n>ylabel</span><span class=p>(</span><span class=s1>'Principal Component 2'</span><span class=p>)</span>
+</span><span id=__span-2-100><a id=__codelineno-2-100 name=__codelineno-2-100 href=#__codelineno-2-100></a><span class=n>plt</span><span class=o>.</span><span class=n>legend</span><span class=p>()</span>
+</span><span id=__span-2-101><a id=__codelineno-2-101 name=__codelineno-2-101 href=#__codelineno-2-101></a>
+</span><span id=__span-2-102><a id=__codelineno-2-102 name=__codelineno-2-102 href=#__codelineno-2-102></a><span class=c1># Save plot to buffer</span>
+</span><span id=__span-2-103><a id=__codelineno-2-103 name=__codelineno-2-103 href=#__codelineno-2-103></a><span class=n>buffer</span> <span class=o>=</span> <span class=n>StringIO</span><span class=p>()</span>
+</span><span id=__span-2-104><a id=__codelineno-2-104 name=__codelineno-2-104 href=#__codelineno-2-104></a><span class=n>plt</span><span class=o>.</span><span class=n>savefig</span><span class=p>(</span><span class=n>buffer</span><span class=p>,</span> <span class=nb>format</span><span class=o>=</span><span class=s2>"svg"</span><span class=p>,</span> <span class=n>transparent</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span><span id=__span-2-105><a id=__codelineno-2-105 name=__codelineno-2-105 href=#__codelineno-2-105></a><span class=nb>print</span><span class=p>(</span><span class=n>buffer</span><span class=o>.</span><span class=n>getvalue</span><span class=p>())</span>
+</span></code></pre></div> </div> </div> </div> <h2 id=avaliacao-do-modelo>Avaliação do Modelo</h2> <p>O K-Means, mesmo após redução com PCA, não conseguiu reproduzir bem as cinco classes do conjunto de dados. A matriz de confusão mostra que os clusters formados concentram-se principalmente em duas classes, indicando que o algoritmo não separou adequadamente todas as categorias. Assim, a acurácia obtida reflete apenas a sobreposição entre clusters e classes reais. Uma possível melhoria seria aumentar a quantidade de dados.</p> <h2 id=referencias>Referências</h2> <p><a href=https://squidfunk.github.io/mkdocs-material/reference/ target=_blank>Material for MkDocs</a></p> <aside class=md-source-file> <span class=md-source-file__fact> <span class=md-icon title="Last update"> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg> </span> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="December 8, 2025 17:25:21 UTC">December 8, 2025</span> </span> <span class=md-source-file__fact> <span class=md-icon title=Created> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg> </span> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="December 8, 2025 17:25:21 UTC">December 8, 2025</span> </span> <span class=md-source-file__fact> <span class=md-icon title=Contributors> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"></path></svg> </span> <nav> <a href=mailto:alexandremartinelli11@gmail.com>alexandremartinelli11</a> </nav> </span> </aside> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> <button type=button class="md-top md-icon" data-md-component=top hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg> Back to top </button> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <div class=md-progress data-md-component=progress role=progressbar></div> <script id=__config type=application/json>{"annotate": null, "base": "../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "content.tooltips", "navigation.instant", "navigation.instant.progress", "navigation.top", "navigation.path", "navigation.tracking", "navigation.expand"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../assets/javascripts/bundle.e71a0d61.min.js></script> <script src=../../assets/_markdown_exec_pyodide.js></script> <script src=https://unpkg.com/mathjax/es5/tex-mml-chtml.js></script> <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> <script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script> <script src=https://fastly.jsdelivr.net/npm/jquery/dist/jquery.min.js></script> <script src=https://fastly.jsdelivr.net/npm/echarts/dist/echarts.min.js></script> <script src=../../assets/javascripts/badge.js async></script> <script src=../../termynal.js></script> <script id=init-glightbox>const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
